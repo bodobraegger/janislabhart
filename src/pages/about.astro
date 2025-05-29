@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+---
+
+<Layout>
+    <!-- Navigation -->
+
+    <Nav />
+    
+    <!-- Main content area -->
+    <main class="flex items-start justify-center px-4 pt-20 md:pt-32">
+      <div class="w-full max-w-4xl">
+        <!-- Bio content -->
+        <div class="text-xs md:text-sm leading-relaxed space-y-4 md:space-y-6 mb-12">
+          <p>
+            <strong>JANIS LABHART</strong> is a Zurich-based experimental composer, producer, DJ, and sound artist. His work spans electroacoustic compositions, live performances, and sound installations. Deeply embedded in subcultural contexts, he has long been active as an organizer and curator of concerts, parties, and interdisciplinary festivals. In addition to producing and performing electronic music, he is currently completing his Master's degree in Electroacoustic Composition at ZHdK. Before this, he studied Electronic Music Production at SAE Institute, laying the foundation for both his artistic and technical skills. His work encompasses live performances, collaborative projects, and commissioned compositions, including music for film.
+          </p>
+          
+          <p>
+            The foundation of my artistic practice lies in experimental approaches to sound and music. My work engages with themes of perception and spatiality, realized through acousmatic and electroacoustic compositions, as well as live performances. Using the computer as my primary instrument, I create fictional sonic scenarios that challenge the listener's cognitive and perceptual frameworks. These works deconstruct and recontextualize sound, forming immersive sonic environments.
+          </p>
+        </div>
+
+        <!-- Contact section -->
+        <div class="text-center mb-12">
+          <h2 class="text-sm md:text-base font-bold mb-4">CONTACT ME VIA</h2>
+          <a href="mailto:janislabhart@gmail.com" class="text-xs md:text-sm hover:underline">
+            janislabhart@gmail.com
+          </a>
+        </div>
+
+        <!-- Artist photo and links -->
+        <div class="flex flex-col md:flex-row items-center justify-between">
+          <!-- Links -->
+          <div class="text-xs md:text-sm font-bold space-y-1 mb-8 md:mb-0">
+            <div>→ <a href="#" class="hover:underline">SOUNDCLOUD</a></div>
+            <div>→ <a href="#" class="hover:underline">VIMEO</a></div>
+            <div>⊙ CLICK!</div>
+          </div>
+          
+          <!-- Artist photo -->
+          <div class="w-48 h-48 md:w-64 md:h-64">
+            <img src="/artist-photo.jpg" alt="Janis Labhart" class="w-full h-full object-cover filter sepia opacity-80">
+          </div>
+        </div>
+      </div>
+    </main>
+</Layout>

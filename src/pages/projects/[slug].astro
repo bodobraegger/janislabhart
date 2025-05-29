@@ -1,0 +1,56 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+
+export async function getStaticPaths() {
+  const res = await fetch("https://mixmixmix.ch/wp-json/wp/v2/posts");
+  const posts = await res.json();
+
+  return posts.map((post: any) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+
+// Fetch featured image if exists
+let featuredImage = null;
+if (post.featured_media) {
+  try {
+    const mediaRes = await fetch(`https://mixmixmix.ch/wp-json/wp/v2/media/${post.featured_media}`);
+    const media = await mediaRes.json();
+    featuredImage = media.source_url;
+  } catch (error) {
+    console.log('Error fetching media:', error);
+  }
+}
+---
+
+<Layout>
+  <Nav />
+  
+  <main class="max-w-4xl mx-auto px-4 py-20">
+    <!-- Project title -->
+    <h1 class="text-4xl md:text-6xl font-black mb-8" set:html={post.title.rendered} />
+    
+    <!-- Featured image -->
+    {featuredImage && (
+      <div class="mb-8">
+        <img 
+          src={featuredImage} 
+          alt={post.title.rendered}
+          class="w-full max-w-2xl mx-auto"
+        />
+      </div>
+    )}
+    
+    <!-- Post content -->
+    <div class="prose prose-lg max-w-none" set:html={post.content.rendered} />
+    
+    <!-- Back link -->
+    <div class="mt-12">
+      <a href="/" class="text-sm hover:underline">← BACK TO WORKS</a>
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,162 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+
+const res = await fetch("https://mixmixmix.ch/wp-json/wp/v2/posts");
+const posts = await res.json();
+
+// Fetch featured images for each post
+const postsWithImages = await Promise.all(
+  posts.map(async (post: any) => {
+    let featuredImage = null;
+    if (post.featured_media) {
+      try {
+        const mediaRes = await fetch(`https://mixmixmix.ch/wp-json/wp/v2/media/${post.featured_media}`);
+        const media = await mediaRes.json();
+        featuredImage = media.source_url;
+      } catch (error) {
+        console.log('Error fetching media:', error);
+      }
+    }
+    return { ...post, featuredImage };
+  })
+);
+
+// Simple hash function for consistent pseudorandom positions
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  return Math.abs(hash);
+}
+
+// Generate consistent pseudorandom positions based on post ID
+const randomPositions = postsWithImages.map((post: any) => {
+  const seed = hashString(post.id.toString() + post.title.rendered);
+  const x = ((seed % 400) - 200); // Range: -200 to 200
+  const y = (((seed >> 8) % 200) - 100); // Range: -100 to 100
+  return { x, y };
+});
+---
+
+<Layout>
+    <!-- Navigation -->
+    <Nav />
+
+    <!-- Main content area -->
+    <main class="flex items-center justify-center px-4">
+      <div class="text-center w-full relative">
+        <!-- Project list -->
+        <div class="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-black leading-none">
+          {postsWithImages.map((post: any, index: number) => (
+            <div class="break-words group relative">
+              <div class="project-item" data-project-id={post.id}>
+                <h2 class="cursor-pointer hover:invert transition-colors py-1" set:html={post.title.rendered} />
+                
+                <!-- Expandable content that folds under title -->
+                <div class="project-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
+                  <div class="py-8 px-4 bg-gray-300 text-xs md:text-sm text-left max-w-2xl mx-auto">
+                    <!-- Featured image -->
+                    {post.featuredImage && (
+                      <div class="mb-6">
+                        <img 
+                          src={post.featuredImage} 
+                          alt={post.title.rendered}
+                          class="w-full max-w-md mx-auto"
+                        />
+                      </div>
+                    )}
+                    
+                    <!-- Post content -->
+                    <div class="prose prose-sm max-w-none text-black" set:html={post.content.rendered} />
+                    
+                    <!-- Close button -->
+                    <div class="mt-6 text-center">
+                      <button class="close-btn text-xs hover:underline">CLOSE</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Project image preview - appears on hover at pseudorandom position -->
+              <div 
+                class="fixed opacity-0 group-hover:opacity-90 transition-opacity duration-100 pointer-events-none hidden lg:block z-50"
+                style={`transform: translate(${randomPositions[index].x}px, ${randomPositions[index].y}px);`}
+              >
+                <div class="w-48 h-64 bg-orange-200 relative overflow-hidden">
+                  {post.featuredImage ? (
+                    <img 
+                      src={post.featuredImage} 
+                      alt={post.title.rendered}
+                      class="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div class="absolute inset-0 flex items-center justify-center">
+                      <div class="text-white text-6xl font-light">|</div>
+                    </div>
+                  )}
+
+                  <!-- Heavy filter overlay -->
+                  <div class="absolute inset-0 backdrop-invert-70"></div>
+                  <div class="absolute inset-0 bg-orange-300 mix-blend-multiply opacity-60"></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
+
+    <!-- Desktop footer/Click indicator -->
+    <div class="absolute bottom-8 left-8 hidden md:block">
+      <span class="text-sm">CLICK</span>
+      <span class="ml-2">:-)</span>
+    </div>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const projectItems = document.querySelectorAll('.project-item');
+    
+    projectItems.forEach(item => {
+      const title = item.querySelector('h2');
+      const content = item.querySelector('.project-content');
+      const closeBtn = item.querySelector('.close-btn');
+      
+      title?.addEventListener('click', () => {
+        // Close all other open projects
+        projectItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            const otherContent = otherItem.querySelector('.project-content');
+            if (otherContent) {
+              otherContent.style.maxHeight = '0';
+              otherContent.style.opacity = '0';
+            }
+          }
+        });
+        
+        // Toggle current project
+        if (content) {
+          if (content.style.maxHeight === '0px' || !content.style.maxHeight) {
+            content.style.maxHeight = content.scrollHeight + 'px';
+            content.style.opacity = '1';
+          } else {
+            content.style.maxHeight = '0';
+            content.style.opacity = '0';
+          }
+        }
+      });
+      
+      closeBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (content) {
+          content.style.maxHeight = '0';
+          content.style.opacity = '0';
+        }
+      });
+    });
+  });
+</script>
