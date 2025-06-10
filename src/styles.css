@@ -24,6 +24,10 @@ header a:hover {
     text-decoration: underline;
 }
 
+h2 {
+    scroll-margin-top: 7rem;
+}
+
 .project-content {
     background: var(--c-bg-works)
 }

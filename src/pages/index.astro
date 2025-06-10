@@ -52,13 +52,14 @@ const randomPositions = postsWithImages.map((post: any) => {
           {postsWithImages.map((post: any, index: number) => (
             <div class="break-words group relative">
               <div class="project-item" data-project-id={post.id}>
-                <h2 id={post.id} class="select-none cursor-pointer hover:invert transition-colors py-1" set:html={post.title.rendered} />
-                
+                <h2 id={post.id} class="select-none cursor-pointer hover:invert transition-colors py-1">
+                  <a href={`#${post.id}`} set:html={post.title.rendered} />
+                </h2>
                 <!-- Expandable content that folds under title -->
                 <div class="project-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
                   <div class="py-8 px-4 text-xs md:text-sm text-left max-w-2xl mx-auto">
                     <!-- Featured image -->
-                    {post.featuredImage && (
+                    {/* {post.featuredImage && (
                       <div class="mb-6">
                         <img 
                           src={post.featuredImage} 
@@ -66,7 +67,7 @@ const randomPositions = postsWithImages.map((post: any) => {
                           class="w-full max-w-md mx-auto"
                         />
                       </div>
-                    )}
+                    )} */}
                     
                     <!-- Post content -->
                     <div class="prose prose-sm max-w-none text-black" set:html={post.content.rendered} />
@@ -117,6 +118,17 @@ const randomPositions = postsWithImages.map((post: any) => {
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash.length) {
+      const hash = window.location.hash.substring(1); // Remove the #
+      const targetItem = document.querySelector(`h2[id="${hash}"]`);
+      if (targetItem) {
+        const content = targetItem.nextElementSibling;
+        if (content) {
+          content.classList.remove('max-h-0', 'opacity-0');
+        }
+      }
+    }
+
     const projectItems = document.querySelectorAll('.project-item');
     
     projectItems.forEach(item => {
@@ -131,6 +143,7 @@ const randomPositions = postsWithImages.map((post: any) => {
             const otherContent = otherItem.querySelector('.project-content');
             if (otherContent) {
               otherContent.classList.add('max-h-0', 'opacity-0');
+              window.location.hash = ''; // Clear hash when closing other projects
             }
           }
         });
