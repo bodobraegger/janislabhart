@@ -118,32 +118,33 @@ const randomPositions = postsWithImages.map((post: any) => {
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.hash.length) {
-      const hash = window.location.hash.substring(1); // Remove the #
-      const targetItem = document.querySelector(`h2[id="${hash}"]`);
-      if (targetItem) {
-        const content = targetItem.nextElementSibling;
-        if (content) {
-          content.classList.remove('max-h-0', 'opacity-0');
-        }
-      }
-    }
-
+    
     const projectItems = document.querySelectorAll('.project-item');
     
     projectItems.forEach(item => {
       const title = item.querySelector('h2');
+      if (window.location.hash.length) {
+        const hash = window.location.hash.substring(1); // Remove the #
+        if (hash == title?.id) {
+          const content = item.querySelector('.project-content');
+          if (content) {
+            content.classList.remove('max-h-0', 'opacity-0');
+            title.classList.add('invert')
+          }
+        }
+      }
       const content = item.querySelector('.project-content');
       const closeBtn = item.querySelector('.close-btn');
       
       title?.addEventListener('click', () => {
         // Close all other open projects
         projectItems.forEach(otherItem => {
+          const otherTitle = otherItem.querySelector('h2');
           if (otherItem !== item) {
             const otherContent = otherItem.querySelector('.project-content');
             if (otherContent) {
               otherContent.classList.add('max-h-0', 'opacity-0');
-              window.location.hash = ''; // Clear hash when closing other projects
+              otherTitle?.classList.remove('invert');
             }
           }
         });
@@ -152,8 +153,10 @@ const randomPositions = postsWithImages.map((post: any) => {
         if (content) {
           if (content.classList.contains('max-h-0')) {
             content.classList.remove('max-h-0', 'opacity-0');
+            title.classList.add('invert');
           } else {
             content.classList.add('max-h-0', 'opacity-0');
+            title.classList.remove('invert');
           }
         }
       });
@@ -162,6 +165,7 @@ const randomPositions = postsWithImages.map((post: any) => {
         e.stopPropagation();
         if (content) {
           content.classList.add('max-h-0', 'opacity-0');
+          title?.classList.remove('invert');
         }
       });
     });
