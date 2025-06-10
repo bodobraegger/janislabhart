@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
 
 const res = await fetch("https://mixmixmix.ch/wp-json/wp/v2/posts");
 const posts = await res.json();
@@ -36,7 +35,7 @@ function hashString(str: string): number {
 // Generate consistent pseudorandom positions based on post ID
 const randomPositions = postsWithImages.map((post: any) => {
   const seed = hashString(post.id.toString() + post.title.rendered);
-  const x = ((seed % 400) - 200); // Range: -200 to 200
+  const x = ((seed % 400) - 50); // Range: -200 to 200
   const y = (((seed >> 8) % 200) - 100); // Range: -100 to 100
   return { x, y };
 });
@@ -44,13 +43,12 @@ const randomPositions = postsWithImages.map((post: any) => {
 
 <Layout>
     <!-- Navigation -->
-    <Nav />
 
     <!-- Main content area -->
     <main class="flex items-center justify-center px-4">
       <div class="text-center w-full relative">
         <!-- Project list -->
-        <div class="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-black leading-none">
+        <div class="text-3xl sm:text-4xl md:text-6xl lg:text-8xl">
           {postsWithImages.map((post: any, index: number) => (
             <div class="break-words group relative">
               <div class="project-item" data-project-id={post.id}>
@@ -58,7 +56,7 @@ const randomPositions = postsWithImages.map((post: any) => {
                 
                 <!-- Expandable content that folds under title -->
                 <div class="project-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
-                  <div class="py-8 px-4 bg-gray-300 text-xs md:text-sm text-left max-w-2xl mx-auto">
+                  <div class="py-8 px-4 text-xs md:text-sm text-left max-w-2xl mx-auto">
                     <!-- Featured image -->
                     {post.featuredImage && (
                       <div class="mb-6">

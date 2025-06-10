@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Nav from '../../components/Nav.astro';
 
 export async function getStaticPaths() {
   const res = await fetch("https://mixmixmix.ch/wp-json/wp/v2/posts");
@@ -28,8 +27,6 @@ if (post.featured_media) {
 ---
 
 <Layout>
-  <Nav />
-  
   <main class="max-w-4xl mx-auto px-4 py-20">
     <!-- Project title -->
     <h1 class="text-4xl md:text-6xl font-black mb-8" set:html={post.title.rendered} />

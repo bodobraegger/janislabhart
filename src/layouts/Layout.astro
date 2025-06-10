@@ -1,5 +1,7 @@
 ---
 import '../styles.css'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
 ---
 <!doctype html>
 <html lang="en">
@@ -11,8 +13,8 @@ import '../styles.css'
         <title>Janis Labhart</title>
     </head>
     <body>
-        <div class="min-h-screen bg-gray-400 relative">
-            <slot />
-        </div>
+        <Header />>
+        <slot />
+        <Footer />
     </body>
 </html>
