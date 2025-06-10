@@ -52,7 +52,7 @@ const randomPositions = postsWithImages.map((post: any) => {
           {postsWithImages.map((post: any, index: number) => (
             <div class="break-words group relative">
               <div class="project-item" data-project-id={post.id}>
-                <h2 class="cursor-pointer hover:invert transition-colors py-1" set:html={post.title.rendered} />
+                <h2 id={post.id} class="select-none cursor-pointer hover:invert transition-colors py-1" set:html={post.title.rendered} />
                 
                 <!-- Expandable content that folds under title -->
                 <div class="project-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
@@ -130,20 +130,17 @@ const randomPositions = postsWithImages.map((post: any) => {
           if (otherItem !== item) {
             const otherContent = otherItem.querySelector('.project-content');
             if (otherContent) {
-              otherContent.style.maxHeight = '0';
-              otherContent.style.opacity = '0';
+              otherContent.classList.add('max-h-0', 'opacity-0');
             }
           }
         });
         
         // Toggle current project
         if (content) {
-          if (content.style.maxHeight === '0px' || !content.style.maxHeight) {
-            content.style.maxHeight = content.scrollHeight + 'px';
-            content.style.opacity = '1';
+          if (content.classList.contains('max-h-0')) {
+            content.classList.remove('max-h-0', 'opacity-0');
           } else {
-            content.style.maxHeight = '0';
-            content.style.opacity = '0';
+            content.classList.add('max-h-0', 'opacity-0');
           }
         }
       });
@@ -151,8 +148,7 @@ const randomPositions = postsWithImages.map((post: any) => {
       closeBtn?.addEventListener('click', (e) => {
         e.stopPropagation();
         if (content) {
-          content.style.maxHeight = '0';
-          content.style.opacity = '0';
+          content.classList.add('max-h-0', 'opacity-0');
         }
       });
     });
