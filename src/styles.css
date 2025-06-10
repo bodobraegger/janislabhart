@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+/* Hide scrollbar for webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+/* Hide scrollbar for Firefox */
+html {
+    scrollbar-width: none;
+}
+
+/* Ensure smooth scrolling */
+html, body {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+header a {
+    display: block;
+}
+header a:hover {
+    text-decoration: underline;
+}
