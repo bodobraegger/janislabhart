@@ -82,7 +82,7 @@ const randomPositions = postsWithImages.map((post: any) => {
               
               <!-- Project image preview - appears on hover at pseudorandom position -->
               <div 
-                class="fixed opacity-0 group-hover:opacity-90 transition-opacity duration-100 pointer-events-none hidden lg:block z-50"
+                class="absolute opacity-0 group-hover:opacity-90 transition-opacity duration-100 pointer-events-none hidden lg:block z-50"
                 style={`transform: translate(${randomPositions[index].x}px, ${randomPositions[index].y}px);`}
               >
                 <div class="w-48 h-64 bg-orange-200 relative overflow-hidden">
