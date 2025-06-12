@@ -1,3 +1,12 @@
+---
+const categories = await fetch('https://mixmixmix.ch/wp-json/wp/v2/categories')
+    .then(res => res.json())
+    .catch(err => {
+        console.error('Error fetching categories:', err);
+        return [];
+    });
+---
+
 <header class="min-h-30 md:min-h-41 sticky top-0 backdrop-blur-sm z-20">
 
 
@@ -50,10 +59,15 @@
         <button class="works-dropdown-btn cursor-pointer hover:opacity-70">WORKS</button>
         <div class="works-dropdown hidden transition-all duration-200 z-30 min-w-max">
             <button class="category-btn block" data-category="all">ALL</button>
-            <button class="category-btn block" data-category="composition">COMPOSITION</button>
+            <!-- <button class="category-btn block" data-category="composition">COMPOSITION</button>
             <button class="category-btn block" data-category="live">LIVE</button>
             <button class="category-btn block" data-category="instruments">INSTRUMENTS</button>
-            <button class="category-btn block" data-category="installations">INSTALLATIONS</button>
+            <button class="category-btn block" data-category="installations">INSTALLATIONS</button> -->
+            {categories.map((category: any) => (
+                <button class="category-btn block" data-category={category.slug}>
+                    {category.name.toUpperCase()}
+                </button>
+            ))}
         </div>
     </div>
     <a href="about">ABOUT</a>
