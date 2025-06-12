@@ -64,6 +64,26 @@ footer {
   mask-image: linear-gradient(to top, var(--c-bg) 50%, transparent 100%);
 }
 
+.prose {
+    text-align: justify;
+    word-break: normal;
+    hyphens: auto;
+    hyphenate-limit-chars: 6 3 3;
+}
+
+@media (min-width: 768px) {
+    .prose {
+        column-count: 2;
+        column-gap: 2rem;
+        column-fill: balance;
+    }
+}
+
+.prose figure {
+    column-span: all;
+    margin: 1rem 0;
+}
+
 .prose img {
   filter: var(--image-filters);
   transition: filter 0.3s ease;
