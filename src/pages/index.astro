@@ -53,7 +53,7 @@ const randomPositions = postsWithImages.map((post: any) => {
             <div class="break-words group relative">
               <div class="project-item" data-project-id={post.id}>
                 <h2 id={post.id} class="select-none cursor-pointer hover:invert transition-colors py-1">
-                  <a href={`#${post.id}`} set:html={post.title.rendered} />
+                  {post.title.rendered}
                 </h2>
                 <!-- Expandable content that folds under title -->
                 <div class="project-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
