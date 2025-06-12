@@ -10,48 +10,47 @@
     <a href="/">JANIS LABHART</a>
 </h1>
 
-<nav class="p-4 md:p-8">
-    <div class="font-bold text-xs md:text-sm space-y-1 md:space-y-2">
-        <div class="group">
-            <button class="works-dropdown-btn cursor-pointer hover:opacity-70">WORKS</button>
-            <div class="works-dropdown hidden transition-all duration-200 z-30 min-w-max">
-                    <button class="filter-btn block" data-filter="all">ALL</button>
-                    <button class="filter-btn block" data-filter="composition">COMPOSITION</button>
-                    <button class="filter-btn block" data-filter="live">LIVE</button>
-                    <button class="filter-btn block" data-filter="instruments">INSTRUMENTS</button>
-                    <button class="filter-btn block" data-filter="installations">INSTALLATIONS</button>
-            </div>
+<nav class="p-4 md:p-8 font-bold text-xs md:text-sm space-y-1 md:space-y-2">
+    <div class="group">
+        <button class="works-dropdown-btn cursor-pointer hover:opacity-70">WORKS</button>
+        <div class="works-dropdown hidden transition-all duration-200 z-30 min-w-max">
+            <button class="category-btn block" data-category="all">ALL</button>
+            <button class="category-btn block" data-category="composition">COMPOSITION</button>
+            <button class="category-btn block" data-category="live">LIVE</button>
+            <button class="category-btn block" data-category="instruments">INSTRUMENTS</button>
+            <button class="category-btn block" data-category="installations">INSTALLATIONS</button>
         </div>
-        <a href="about">ABOUT</a>
-        <a href="calendar">CALENDER</a>
     </div>
+    <a href="about">ABOUT</a>
+    <a href="calendar">CALENDER</a>
 </nav>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const worksButton = document.querySelector('.works-dropdown-btn');
         const dropdown = document.querySelector('.works-dropdown');
-        const filterButtons = document.querySelectorAll('.filter-btn');
+        const categoryButtons = document.querySelectorAll('.category-btn');
         
         // Toggle dropdown on WORKS click
         worksButton?.addEventListener('click', () => {
             dropdown?.classList.toggle('hidden');
         });
         
-        // Handle filter button clicks
-        filterButtons.forEach(btn => {
+        // Handle category button clicks
+        categoryButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const filter = e.target!.getAttribute('data-filter');
+                const targetElement = e.target as HTMLElement;
+                const category = targetElement.getAttribute('data-category');
                 
                 // Remove active state from all buttons
-                filterButtons.forEach(b => b.classList.remove('selected'));
-                
+                categoryButtons.forEach(b => b.classList.remove('selected'));
+                console.log(targetElement)
                 // Add active state to clicked button
-                e.target!.classList.add('selected');
+                targetElement.classList.add('selected');
                 
                 // Dispatch custom event that the index page can listen to
-                window.dispatchEvent(new CustomEvent('filterWorks', { 
-                    detail: { filter } 
+                window.dispatchEvent(new CustomEvent('categoryWorks', { 
+                    detail: { category } 
                 }));
                 ;
             });

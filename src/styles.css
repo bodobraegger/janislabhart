@@ -37,12 +37,19 @@ header {
 header a {
     display: block;
 }
-header a:hover {
-    text-decoration: underline;
+a:hover, button:hover {
+    color: var(--c-highlight);
 }
 
 h2 {
     scroll-margin-top: 7rem;
+}
+h2:hover {
+    color: var(--c-highlight);
+}
+
+*[aria-expanded="true"], .selected {
+    color: var(--c-highlight);
 }
 
 .project-content {
@@ -54,15 +61,11 @@ footer {
   mask-image: linear-gradient(to top, var(--c-bg) 50%, transparent 100%);
 }
 
-*[aria-expanded="true"] {
-    color: var(--c-highlight);
-}
-
 .prose img {
   filter: var(--image-filters);
   transition: filter 0.3s ease;
 }
 
 .prose img:hover {
-  filter: grayscale(0);
+    filter: grayscale(0);
 }
