@@ -52,7 +52,7 @@ const randomPositions = postsWithImages.map((post: any) => {
           {postsWithImages.map((post: any, index: number) => (
             <div class="break-words group relative">
               <div class="project-item" data-project-id={post.id}>
-                <h2 id={post.id} class="select-none cursor-pointer hover:invert transition-colors py-1">
+                <h2 id={post.id} class="select-none cursor-pointer hover:color-[var(--c-highlight)] aria-expanded:color-[var--c-highlight] transition-colors py-1">
                   {post.title.rendered}
                 </h2>
                 <!-- Expandable content that folds under title -->
@@ -144,7 +144,7 @@ const randomPositions = postsWithImages.map((post: any) => {
             const otherContent = otherItem.querySelector('.project-content');
             if (otherContent) {
               otherContent.classList.add('max-h-0', 'opacity-0');
-              otherTitle?.classList.remove('invert');
+              otherTitle!.ariaExpanded = 'false';
             }
           }
         });
@@ -153,10 +153,10 @@ const randomPositions = postsWithImages.map((post: any) => {
         if (content) {
           if (content.classList.contains('max-h-0')) {
             content.classList.remove('max-h-0', 'opacity-0');
-            title.classList.add('invert');
+            title.ariaExpanded = 'true';
           } else {
             content.classList.add('max-h-0', 'opacity-0');
-            title.classList.remove('invert');
+            title.ariaExpanded = 'false';
           }
         }
       });
@@ -165,7 +165,7 @@ const randomPositions = postsWithImages.map((post: any) => {
         e.stopPropagation();
         if (content) {
           content.classList.add('max-h-0', 'opacity-0');
-          title?.classList.remove('invert');
+          title!.ariaExpanded = 'false';
         }
       });
     });

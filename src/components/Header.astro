@@ -12,9 +12,51 @@
 
 <nav class="p-4 md:p-8">
     <div class="font-bold text-xs md:text-sm space-y-1 md:space-y-2">
-    <a href="works">WORKS</a>
-    <a href="about">ABOUT</a>
-    <a href="calendar">CALENDER</a>
+        <div class="group">
+            <button class="works-dropdown-btn cursor-pointer hover:opacity-70">WORKS</button>
+            <div class="works-dropdown hidden transition-all duration-200 z-30 min-w-max">
+                    <button class="filter-btn block" data-filter="all">ALL</button>
+                    <button class="filter-btn block" data-filter="composition">COMPOSITION</button>
+                    <button class="filter-btn block" data-filter="live">LIVE</button>
+                    <button class="filter-btn block" data-filter="instruments">INSTRUMENTS</button>
+                    <button class="filter-btn block" data-filter="installations">INSTALLATIONS</button>
+            </div>
+        </div>
+        <a href="about">ABOUT</a>
+        <a href="calendar">CALENDER</a>
     </div>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const worksButton = document.querySelector('.works-dropdown-btn');
+        const dropdown = document.querySelector('.works-dropdown');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        // Toggle dropdown on WORKS click
+        worksButton?.addEventListener('click', () => {
+            dropdown?.classList.toggle('hidden');
+        });
+        
+        // Handle filter button clicks
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const filter = e.target!.getAttribute('data-filter');
+                
+                // Remove active state from all buttons
+                filterButtons.forEach(b => b.classList.remove('selected'));
+                
+                // Add active state to clicked button
+                e.target!.classList.add('selected');
+                
+                // Dispatch custom event that the index page can listen to
+                window.dispatchEvent(new CustomEvent('filterWorks', { 
+                    detail: { filter } 
+                }));
+                ;
+            });
+        });
+    });
+</script>
+
 </header>
