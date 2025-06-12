@@ -34,7 +34,10 @@ header {
     mask-image: linear-gradient(to bottom, var(--c-bg) 50%, transparent 100%);
 }
 
-header a {
+nav {
+    user-select: none;
+}
+nav a {
     display: block;
 }
 a:hover, button:hover {
