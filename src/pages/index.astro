@@ -48,16 +48,14 @@ const randomPositions = postsWithImages.map((post: any) => {
     <main class="flex items-center justify-center">
       <div class="text-center w-full relative">
         <!-- Project list -->
-        <div class="text-3xl sm:text-4xl md:text-6xl lg:text-8xl">
           {postsWithImages.map((post: any, index: number) => (
-            <div class="break-words group relative">
-              <div class="project-item" data-project-id={post.id}>
-                <h2 id={post.id} class="select-none aria-expanded:color-[var(--c-highlight)] transition-colors">
+              <div class:list={["project-item", post.class_list.pop()]} data-project-id={post.id}>
+                <h2 id={post.id} class="select-none aria-expanded:color-[var(--c-highlight)] transition-colors text-3xl sm:text-4xl md:text-6xl lg:text-8xl">
                   {post.title.rendered}
                 </h2>
                 <!-- Expandable content that folds under title -->
                 <div class="project-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
-                  <div class="py-8 px-4 text-xs md:text-sm text-left max-w-2xl mx-auto">
+                  <div class="py-8 px-4 text-sm md:text-base max-w-2xl mx-auto">
                     <!-- Featured image -->
                     {/* {post.featuredImage && (
                       <div class="mb-6">
@@ -101,9 +99,7 @@ const randomPositions = postsWithImages.map((post: any) => {
                   <div class="absolute inset-0 bg-orange-300 mix-blend-multiply opacity-60"></div>
                 </div>
               </div>
-            </div>
           ))}
-        </div>
       </div>
     </main>
 
