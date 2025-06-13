@@ -164,4 +164,19 @@ const randomPositions = postsWithImages.map((post: any) => {
       });
     });
   });
+
+  // handle categoryworks events
+  window.addEventListener('categoryWorks', (event) => {
+    const category = `category-${(event as CustomEvent).detail.category}`;
+
+    document.querySelectorAll('.project-item').forEach(item => {
+      const projectCat = item.classList[1]
+      if (category === 'all' || projectCat === category) {
+        item.classList.remove('hidden');
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+
+  });
 </script>

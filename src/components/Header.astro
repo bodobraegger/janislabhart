@@ -38,7 +38,6 @@ const categories = await fetch('https://mixmixmix.ch/wp-json/wp/v2/categories')
                 
                 // Remove active state from all buttons
                 categoryButtons.forEach(b => b.classList.remove('selected'));
-                console.log(targetElement)
                 // Add active state to clicked button
                 targetElement.classList.add('selected');
                 
