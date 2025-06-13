@@ -17,5 +17,7 @@ Design by Lara Koller
 ## Todos:
 
 - [ ] Fetch /about data from API
-- [ ] Move all styles to [/src/styles.css](/src/styles.css) - will get rid of data-astro... attributes
+- [x] Move all styles to [/src/styles.css](/src/styles.css) - will get rid of data-astro... attributes
 - [ ] Add a favicon
+- [ ] Calendar
+- [ ] Test work categories, implement filtering
