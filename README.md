@@ -20,4 +20,4 @@ Design by Lara Koller
 - [x] Move all styles to [/src/styles.css](/src/styles.css) - will get rid of data-astro... attributes
 - [ ] Add a favicon
 - [ ] Calendar
-- [ ] Test work categories, implement filtering
+- [x] Test work categories, implement filtering
