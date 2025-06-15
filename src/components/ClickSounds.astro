@@ -10,6 +10,7 @@ const { soundUrls = [] } = Astro.props;
     let audioElements = [];
     let currentlyPlaying = null;
     let soundEnabled = false;
+    let currentSoundIndex = -1;
 
     function shuffle(theArray) {
         var tmp;
@@ -63,6 +64,7 @@ const { soundUrls = [] } = Astro.props;
 
     function playSound() {
         if (audioElements.length === 0) return;
+        currentSoundIndex = (currentSoundIndex + 1) % audioElements.length;
 
         // Stop currently playing sound
         if (currentlyPlaying) {
@@ -71,8 +73,7 @@ const { soundUrls = [] } = Astro.props;
         }
 
         // Pick random sound
-        const randomIndex = Math.floor(Math.random() * audioElements.length);
-        const selectedAudio = audioElements[randomIndex];
+        const selectedAudio = audioElements[currentSoundIndex];
 
         // Play the sound
         selectedAudio.play().catch((error) => {
