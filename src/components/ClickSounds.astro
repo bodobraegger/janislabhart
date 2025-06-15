@@ -1,0 +1,89 @@
+---
+const { soundUrls = [] } = Astro.props;
+---
+
+<button id="sound-toggle" class="fixed bottom-8 left-8 hidden md:block z-20">
+    CLICK ;)
+</button>
+
+<script define:vars={{ soundUrls }}>
+    let audioElements = [];
+    let currentlyPlaying = null;
+    let soundEnabled = false;
+
+    function shuffle(theArray) {
+        var tmp;
+        for (var i = 0; i < theArray.length; i++) {
+            // Generate random index into the array:
+            var j = Math.floor(Math.random() * theArray.length);
+
+            // Swap current item with random item:
+            tmp = theArray[i];
+            theArray[j] = theArray[i];
+            theArray[i] = tmp;
+        }
+        return theArray;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Create audio elements from the server-side soundUrls
+        shuffle(soundUrls);
+        if (soundUrls && soundUrls.length > 0) {
+            audioElements = soundUrls.map((url) => {
+                const audio = new Audio(url);
+                audio.volume = 0.7;
+                return audio;
+            });
+        }
+
+        const soundToggle = document.getElementById("sound-toggle");
+
+        soundToggle?.addEventListener("click", (e) => {
+            e.stopPropagation();
+            soundEnabled = !soundEnabled;
+            soundToggle.textContent = soundEnabled ? "CLICK ;(" : "CLICK ;)";
+            soundToggle.style.opacity = soundEnabled ? "1" : "0.7";
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!soundEnabled || audioElements.length === 0) return;
+            // Ignore clicks on links or buttons
+            if (
+                e.target.tagName === "A" ||
+                e.target.tagName === "BUTTON" ||
+                e.target.closest("a") ||
+                e.target.closest("button")
+            ) {
+                return;
+            }
+
+            playSound();
+        });
+    });
+
+    function playSound() {
+        if (audioElements.length === 0) return;
+
+        // Stop currently playing sound
+        if (currentlyPlaying) {
+            currentlyPlaying.pause();
+            currentlyPlaying.currentTime = 0;
+        }
+
+        // Pick random sound
+        const randomIndex = Math.floor(Math.random() * audioElements.length);
+        const selectedAudio = audioElements[randomIndex];
+
+        // Play the sound
+        selectedAudio.play().catch((error) => {
+            console.log("Audio play failed:", error);
+        });
+
+        currentlyPlaying = selectedAudio;
+
+        // Reset when sound ends
+        selectedAudio.addEventListener("ended", () => {
+            currentlyPlaying = null;
+        });
+    }
+</script>
