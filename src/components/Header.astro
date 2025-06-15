@@ -6,7 +6,7 @@ const categories = await fetch('https://mixmixmix.ch/wp-json/wp/v2/categories')
         return [];
     });
 
-const isWorksPage = Astro.url.pathname === import.meta.env.BASE_URL;
+const isWorksPage = Astro.url.pathname === import.meta.env.BASE_URL || Astro.url.pathname === `${import.meta.env.BASE_URL}/`;
 ---
 
 <header class="min-h-30 md:min-h-41 sticky top-0 backdrop-blur-sm z-20">
