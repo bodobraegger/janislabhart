@@ -21,3 +21,5 @@ Design by Lara Koller
 - [ ] Add a favicon
 - [ ] Calendar
 - [x] Test work categories, implement filtering
+- [x] play random sounds on click with toggle
+  - [ ] change cursor to smiling note on click
