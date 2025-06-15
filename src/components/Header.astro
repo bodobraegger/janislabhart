@@ -68,6 +68,6 @@ const isWorksPage = Astro.url.pathname === import.meta.env.BASE_URL;
             </div>
         )}
     </div>
-    <a href={new URL('about', Astro.url).pathname}>ABOUT</a>
-    <a href={new URL('calendar', Astro.url).pathname}>CALENDER</a>
+    <a href={`${import.meta.env.BASE_URL}about`}>ABOUT</a>
+    <a href={`${import.meta.env.BASE_URL}calendar`}>CALENDER</a>
 </nav>
