@@ -70,30 +70,21 @@ const randomPositions = postsWithImages.map((post: any) => {
                     <!-- Post content -->
                     <div class="prose prose-sm max-w-none text-black" set:html={post.content.rendered} />
                     
-                    <!-- Close button -->
-                    <div class="mt-6 text-center">
-                      <button class="close-btn text-xs">CLOSE</button>
-                    </div>
                   </div>
                 </div>
                 <!-- Project image preview - appears on hover at pseudorandom position -->
                 <div 
-                  class="absolute opacity-0 not-group-has-aria-expanded:group-hover:opacity-90 transition-opacity duration-100 pointer-events-none hidden lg:block z-50"
+                  class="absolute opacity-0 not-group-has-aria-expanded:group-hover:opacity-90 transition-opacity duration-100 hidden lg:block z-50"
                   style={`transform: translate(${randomPositions[index].x}px, ${randomPositions[index].y}px);`}
                 >
-                  <div class="w-48 h-64 bg-orange-200 relative overflow-hidden">
-                    {post.featuredImage ? (
+                  <div class="w-48 h-64">
+                    {post.featuredImage && (
                       <img 
                         src={post.featuredImage} 
                         alt={post.title.rendered}
                         class="w-full h-full object-cover filter-[var(--image-filters)]"
                       />
-                    ) : (
-                      <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="text-white text-6xl font-light">|</div>
-                      </div>
                     )}
-
                     <div class="absolute inset-0 bg-orange-300 mix-blend-hard-light opacity-80"></div>
                   </div>
                 </div>
