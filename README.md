@@ -23,3 +23,4 @@ Design by Lara Koller
 - [x] Test work categories, implement filtering
 - [x] play random sounds on click with toggle
   - [ ] change cursor to smiling note on click
+- [ ] add fonts
