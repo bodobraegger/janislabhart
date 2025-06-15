@@ -39,6 +39,15 @@ const randomPositions = postsWithImages.map((post: any) => {
   const y = (((seed >> 8) % 200) - 100); // Range: -100 to 100
   return { x, y };
 });
+
+// Fetch audio files from WordPress media library
+const audioRes = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?media_type=audio");
+const audioFiles = await audioRes.json();
+
+// Filter for audio files and get their URLs
+const soundUrls = audioFiles
+  .filter((media: any) => media.mime_type.startsWith('audio/'))
+  .map((media: any) => media.source_url);
 ---
 
 <Layout>
@@ -95,10 +104,93 @@ const randomPositions = postsWithImages.map((post: any) => {
     </main>
 
     <!-- Desktop footer/Click indicator -->
-    <div class="absolute bottom-8 left-8 hidden md:block">
-      <span class="text-sm">CLICK</span>
-      <span class="ml-2">:-)</span>
-    </div>
+    <button id="sound-toggle" class="fixed bottom-8 left-8 hidden md:block z-20">
+      CLICK ;)
+    </button>
+
+
+<script define:vars={{ soundUrls }}>
+  let audioElements = [];
+  let currentlyPlaying = null;
+  let soundEnabled = false;
+
+  function shuffle (theArray) {
+    var tmp;
+    for (var i=0; i<theArray.length;i++) {
+        // Generate random index into the array:
+        var j = Math.floor(Math.random()*theArray.length);
+
+        // Swap current item with random item:
+        tmp = theArray[i];
+        theArray[j] = theArray[i];
+        theArray[i] = tmp;
+    }
+    return theArray;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Create audio elements from the server-side soundUrls
+    if (soundUrls && soundUrls.length > 0) {
+      audioElements = soundUrls.map(url => {
+        const audio = new Audio(url);;
+        audio.volume = 0.7;
+        return audio;
+      });
+      console.log(audioElements)
+    }
+
+    const soundToggle = document.getElementById('sound-toggle');
+
+    soundToggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      soundEnabled = !soundEnabled;
+      soundToggle.textContent = soundEnabled ? 'CLICK ;(' : 'CLICK ;)';
+      soundToggle.style.opacity = soundEnabled ? '1' : '0.7';
+
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!soundEnabled || audioElements.length === 0) return;
+      // Ignore clicks on links or buttons
+      if (e.target.tagName === 'A' || 
+          e.target.tagName === 'BUTTON' || 
+          e.target.closest('a') || 
+          e.target.closest('button')) {
+        return;
+      }
+
+      playSound();
+    });
+  });
+
+  function playSound() {
+    if (audioElements.length === 0) return;
+
+    // Stop currently playing sound
+    if (currentlyPlaying) {
+      currentlyPlaying.pause();
+      currentlyPlaying.currentTime = 0;
+    }
+
+    // Pick random sound
+    const randomIndex = Math.floor(Math.random() * audioElements.length);
+    const selectedAudio = audioElements[randomIndex];
+
+    // Play the sound
+    selectedAudio.play().catch(error => {
+      console.log('Audio play failed:', error);
+    });
+
+    currentlyPlaying = selectedAudio;
+
+    // Reset when sound ends
+    selectedAudio.addEventListener('ended', () => {
+      currentlyPlaying = null;
+    });
+  }
+
+</script>
+
 </Layout>
 
 <script>
