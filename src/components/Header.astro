@@ -65,9 +65,9 @@ const isIndexPage = Astro.url.pathname === '/';
         
         {isIndexPage && (
             <div class="works-dropdown hidden transition-all duration-200 z-30 min-w-max">
-                <button class="category-btn block" data-category="all">ALL</button>
+                <button class="category-btn" data-category="all">ALL</button>
                 {categories.map((category: any) => (
-                    <button class="category-btn block" data-category={category.slug}>
+                    <button class="category-btn" data-category={category.slug}>
                         {category.name.toUpperCase()}
                     </button>
                 ))}

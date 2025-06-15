@@ -43,6 +43,10 @@ nav a {
 a:hover, button:hover {
     color: var(--c-highlight);
 }
+.category-btn {
+    margin-left: 0.5rem;
+    display: block;
+}
 
 h2 {
     scroll-margin-top: 7rem;

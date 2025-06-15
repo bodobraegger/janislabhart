@@ -59,7 +59,7 @@ const soundUrls = audioFiles
       <div class="text-center w-full relative">
         <!-- Project list -->
           {postsWithImages.map((post: any, index: number) => (
-              <div class:list={["project-item group", post.class_list.pop()]} data-project-id={post.id}>
+              <div class="project-item group" data-project-category={post.class_list.pop()} data-project-id={post.id}>
                 <h2 id={post.id} class="select-none aria-expanded:color-[var(--c-highlight)] transition-colors text-3xl sm:text-4xl md:text-6xl lg:text-8xl">
                   {post.title.rendered}
                 </h2>
@@ -169,8 +169,12 @@ const soundUrls = audioFiles
     const category = `category-${(event as CustomEvent).detail.category}`;
 
     document.querySelectorAll('.project-item').forEach(item => {
-      const projectCat = item.classList[1]
-      if (category === 'all' || projectCat === category) {
+      if (category === 'category-all') {
+        item.classList.remove('hidden');
+        return;
+      }
+      const projectCat = item.getAttribute('data-project-category') || 'all';
+      if (projectCat === category) {
         item.classList.remove('hidden');
       } else {
         item.classList.add('hidden');
