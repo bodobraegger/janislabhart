@@ -1,17 +1,6 @@
-# Janis Labhart's Portfolio Frontend
+# Janis Labhart's Portfolio Website
 
 Design by Lara Koller
-
-## Commands
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
 
 
 ## Todos:
@@ -24,3 +13,9 @@ Design by Lara Koller
 - [x] play random sounds on click with toggle
   - [ ] change cursor to smiling note on click
 - [ ] add fonts
+- [ ] work metadata like links / specs
+
+
+## Notes
+
+Built with Astro, compiles to a static website with all content fetched during build.
