@@ -93,7 +93,6 @@ const soundUrls = audioFiles
                       )}
                       </div>
                     )}
-
                     
                     <!-- Post content -->
                     <div class="prose prose-sm max-w-none text-black" set:html={post.content.rendered} />
@@ -148,6 +147,7 @@ const soundUrls = audioFiles
       const closeBtn = item.querySelector('.close-btn');
       
       title?.addEventListener('click', () => {
+        /* 
         // Close all other open projects
         projectItems.forEach(otherItem => {
           const otherTitle = otherItem.querySelector('h2');
@@ -159,6 +159,7 @@ const soundUrls = audioFiles
             }
           }
         });
+        */
         
         // Toggle current project
         if (content) {
