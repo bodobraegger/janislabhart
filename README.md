@@ -13,7 +13,7 @@ Design by Lara Koller
 - [x] play random sounds on click with toggle
   - [ ] change cursor to smiling note on click
 - [ ] add fonts
-- [ ] work metadata like links / specs
+- [x] work metadata like links / specs
 
 
 ## Notes
