@@ -1,48 +1,54 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// Fetch about page content from WordPress
+// Fetch the about page from WordPress
+// You can either use a specific page ID or slug
 const aboutRes = await fetch("https://mixmixmix.ch/wp-json/wp/v2/pages?slug=about");
-const aboutData = await aboutRes.json();
-const aboutPage = aboutData[0]; // Get the first (and likely only) result
+const aboutPages = await aboutRes.json();
+const aboutPage = aboutPages[0]; // Get the first (and likely only) result
 
-// Process the content to extract any custom fields or structured data
-const aboutContent = aboutPage?.content?.rendered || '';
-const aboutTitle = aboutPage?.title?.rendered || 'About';
+// Fallback if no about page is found
+if (!aboutPage) {
+  console.error('About page not found in WordPress');
+}
 
-  let featuredImage = null;
-  if (aboutPage.featured_media) {
-    try {
-      const mediaRes = await fetch(`https://mixmixmix.ch/wp-json/wp/v2/media/${aboutPage.featured_media}`);
-      const media = await mediaRes.json();
-      featuredImage = media.source_url;
-    } catch (error) {
-      console.log('Error fetching media:', error);
-    }
+// Fetch featured image if it exists
+let featuredImage = null;
+if (aboutPage?.featured_media) {
+  try {
+    const mediaRes = await fetch(`https://mixmixmix.ch/wp-json/wp/v2/media/${aboutPage.featured_media}`);
+    const media = await mediaRes.json();
+    featuredImage = media.source_url;
+  } catch (error) {
+    console.log('Error fetching featured image:', error);
   }
+}
 
+// Extract custom fields if they exist (for contact info, social links, etc.)
+const contactEmail = aboutPage?.acf?.contact_email || aboutPage?.meta?.contact_email || 'janislabhart@gmail.com';
+const soundcloudUrl = aboutPage?.acf?.soundcloud_url || aboutPage?.meta?.soundcloud_url || '#';
+const vimeoUrl = aboutPage?.acf?.vimeo_url || aboutPage?.meta?.vimeo_url || '#';
 ---
 
 <Layout>
     <!-- Main content area -->
     <main class="about flex justify-center mx-4">
       <div class="w-full max-w-4xl">
-        <!-- About content from WordPress -->
-        <div class="font-normal text-xs md:text-sm leading-relaxed space-y-4 md:space-y-6 mb-12">
-          <div set:html={aboutContent} />
-        </div>
-
-
-          <!-- Artist photo (from featured image or custom field) -->
-          {aboutPage.featured_media && (
-            <figure class="md:w-64 mx-auto relative">
-              <img 
-                src={featuredImage} 
-                alt={aboutTitle}
-              />
-              <div class="absolute inset-0 bg-[var(--c-img-filter)] mix-blend-hard-light opacity-100"></div>
-            </figure>
-          )}
+        
+        {aboutPage ? (
+          <>
+            <!-- Bio content from WordPress -->
+            <div class="prose">
+              <div set:html={aboutPage.content.rendered} />
+            </div>
+          </>
+        ) : (
+          <!-- Fallback content if WordPress page not found -->
+          <div class="text-center">
+            <h1 class="text-2xl mb-4">About page not found</h1>
+            <p class="text-sm">Please create an "About" page in your CMS.</p>
+          </div>
+        )}
       </div>
     </main>
 </Layout>
