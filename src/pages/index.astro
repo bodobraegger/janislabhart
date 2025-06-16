@@ -77,6 +77,19 @@ const soundUrls = audioFiles
                       </div>
                     )} */}
                     
+                    <!-- metadata -->
+                    {post.date && (
+                      <div class="mb-6 font-bold">
+                        <p>{new Date(post.date).getFullYear()}</p>
+                        {post.acf?.details ? (
+                            <p>{post.acf?.details}{post.acf?.location && (<span>, {post.acf?.location}</span>)}</p>
+                        ) : (
+                          <p>{post.acf?.location}</p>
+                        )}
+                      </div>
+                    )}
+
+                    
                     <!-- Post content -->
                     <div class="prose prose-sm max-w-none text-black" set:html={post.content.rendered} />
                     
