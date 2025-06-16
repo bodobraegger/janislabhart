@@ -1,0 +1,148 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Fetch calendar events from WordPress
+const eventsRes = await fetch("https://mixmixmix.ch/wp-json/wp/v2/posts?per_page=100");
+const events = await eventsRes.json();
+
+// Process events and group by month
+const processedEvents = events.filter((post: any) => {return post.class_list.pop() ==='category-event'}).map((event: any) => {
+  // Assuming you have custom fields for date/time``
+  const eventDate = event.meta?.event_date || event.date;
+  const eventTime = event.meta?.event_time || '';
+  const eventLocation = event.meta?.event_location || '';
+  
+  return {
+    id: event.id,
+    title: event.title.rendered,
+    content: event.content.rendered,
+    date: new Date(eventDate),
+    time: eventTime,
+    location: eventLocation,
+    slug: event.slug
+  };
+});
+
+// Sort events by date
+processedEvents.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+// Group events by month/year
+const eventsByMonth = processedEvents.reduce((acc, event) => {
+  const monthKey = `${event.date.getFullYear()}-${event.date.getMonth()}`;
+  if (!acc[monthKey]) {
+    acc[monthKey] = {
+      month: event.date.toLocaleString('default', { month: 'long' }),
+      year: event.date.getFullYear(),
+      events: []
+    };
+  }
+  acc[monthKey].events.push(event);
+  return acc;
+}, {});
+
+const currentDate = new Date();
+---
+
+<Layout>
+    <main class="max-w-4xl mx-auto px-4 py-20">
+    <h1 class="text-4xl md:text-6xl font-black mb-12 text-center">CALENDAR</h1>
+    
+    <div class="space-y-12">
+      {Object.values(eventsByMonth).map((monthData: any) => (
+        <div class="month-section">
+          <h2 class="text-2xl md:text-3xl font-bold mb-6 sticky top-20 bg-gray-400 py-2">
+            {monthData.month.toUpperCase()} {monthData.year}
+          </h2>
+          
+          <div class="space-y-4">
+            {monthData.events.map((event: any) => (
+              <div class="event-item group cursor-pointer border-b border-black/20 pb-4">
+                <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+                  <div class="flex-1">
+                    <div class="flex items-baseline space-x-4 mb-2">
+                      <span class="text-sm font-mono">
+                        {event.date.toLocaleDateString('en-GB', {
+                          day: '2-digit',
+                          month: '2-digit'
+                        })}
+                      </span>
+                      {event.time && (
+                        <span class="text-sm opacity-70">{event.time}</span>
+                      )}
+                    </div>
+                    
+                    <h3 class="text-lg md:text-xl font-bold group-hover:invert transition-colors">
+                      {event.title}
+                    </h3>
+                    
+                    {event.location && (
+                      <p class="text-sm opacity-70 mt-1">{event.location}</p>
+                    )}
+                  </div>
+                  
+                  <div class="mt-2 md:mt-0 md:ml-4">
+                    <span class="text-xs opacity-50">
+                      {event.date < currentDate ? 'PAST' : 'UPCOMING'}
+                    </span>
+                  </div>
+                </div>
+                
+                <!-- Expandable event details -->
+                <div class="event-content max-h-0 overflow-hidden transition-all duration-300 opacity-0">
+                  <div class="pt-4 text-sm prose prose-sm max-w-none">
+                    <div set:html={event.content} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+    
+  </main>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const eventItems = document.querySelectorAll('.event-item');
+    
+    eventItems.forEach(item => {
+      const title = item.querySelector('h3');
+      const content = item.querySelector('.event-content');
+      
+      item.addEventListener('click', () => {
+        // Close all other open events
+        eventItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            const otherContent = otherItem.querySelector('.event-content');
+            if (otherContent) {
+              otherContent.classList.add('max-h-0', 'opacity-0');
+            }
+          }
+        });
+        
+        // Toggle current event
+        if (content) {
+          if (content.classList.contains('max-h-0')) {
+            content.classList.remove('max-h-0', 'opacity-0');
+            content.style.maxHeight = content.scrollHeight + 'px';
+          } else {
+            content.classList.add('max-h-0', 'opacity-0');
+            content.style.maxHeight = '0';
+          }
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .event-item:hover h3 {
+    transform: translateX(4px);
+  }
+  
+  .month-section h2 {
+    backdrop-filter: blur(8px);
+  }
+</style>
