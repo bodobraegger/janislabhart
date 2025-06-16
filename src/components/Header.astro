@@ -1,11 +1,14 @@
 ---
-const categories = await fetch('https://mixmixmix.ch/wp-json/wp/v2/categories')
+const categories_raw = await fetch('https://mixmixmix.ch/wp-json/wp/v2/categories')
     .then(res => res.json())
     .catch(err => {
         console.error('Error fetching categories:', err);
         return [];
     });
 
+const categories = categories_raw
+    .filter((category: any) => category.slug !== 'uncategorized' && category.slug !== 'event')
+    .sort((a: any, b: any) => a.name.localeCompare(b.name));
 const isWorksPage = Astro.url.pathname === import.meta.env.BASE_URL || Astro.url.pathname === `${import.meta.env.BASE_URL}/`;
 ---
 
