@@ -12,7 +12,7 @@ const isWorksPage = Astro.url.pathname === import.meta.env.BASE_URL || Astro.url
 <header class="min-h-30 md:min-h-41 sticky top-0 backdrop-blur-sm z-20">
 
 <h1 class="p-4 text-center font-bold backdrop-blur-sm">
-    <a href="/">JANIS LABHART</a>
+    <a href={import.meta.env.BASE_URL}>JANIS LABHART</a>
 </h1>
 
 <script>
