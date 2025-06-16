@@ -86,6 +86,11 @@ const soundUrls = audioFiles
                         ) : (
                           <p>{post.acf?.location}</p>
                         )}
+                      {post.acf?.link && (
+                          <a href={post.acf.link} target="_blank">
+                            Link
+                          </a>
+                      )}
                       </div>
                     )}
 
