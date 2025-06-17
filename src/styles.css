@@ -4,6 +4,7 @@
 :root {
     --c-bg: #ABABAB; /* Background color */
     --c-verlauf: #FFA176; /* Gradient target color */
+    --c-img-filter: color-mix(in srgb, var(--c-verlauf) 66%, transparent);
     --c-bg-about: linear-gradient(180deg, #ADADAD 71.15%, var(--c-verlauf) 100%);
     --c-bg-calendar: linear-gradient(0deg, transparent 0%, color-mix(in srgb, var(--c-verlauf) 66%, transparent) 57.69%, var(--c-verlauf) 87.02%);
     --c-bg-works: linear-gradient(180deg, transparent 8.17%, var(--c-verlauf) 58.65%, transparent 100%);
