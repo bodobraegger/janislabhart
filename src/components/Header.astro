@@ -21,6 +21,15 @@ const audioFiles = await audioRes.json();
 const soundUrls = audioFiles
   .filter((media: any) => media.mime_type.startsWith('audio/'))
   .map((media: any) => media.source_url);
+
+const cursors = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?media_type=image")
+    .then(res => res.json())
+    .then(media => media.filter((m: any) => m.slug.startsWith('cursor_')))
+    .catch(err => {
+        console.error('Error fetching cursors:', err);
+        return [];
+    });
+
 ---
 
 <header class="min-h-28 sticky top-0 backdrop-blur-sm z-20">
@@ -86,4 +95,4 @@ const soundUrls = audioFiles
     <a href={`${import.meta.env.BASE_URL}/calendar`}>CALENDER</a>
 </nav>
 
-<ClickSounds soundUrls={soundUrls} />
+<ClickSounds soundUrls={soundUrls} cursors={cursors} />
