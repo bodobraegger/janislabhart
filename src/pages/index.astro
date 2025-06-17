@@ -82,7 +82,7 @@ const soundUrls = audioFiles
                     
                     <!-- metadata -->
                     {post.date && (
-                      <div class="mb-6 font-bold">
+                      <div class="mb-6">
                         <p>{new Date(post.date).getFullYear()}</p>
                         {post.acf?.details ? (
                             <p>{post.acf?.details}{post.acf?.location && (<span>, {post.acf?.location}</span>)}</p>
@@ -98,7 +98,7 @@ const soundUrls = audioFiles
                     )}
                     
                     <!-- Post content -->
-                    <div class="prose prose-sm max-w-none text-black" set:html={post.content.rendered} />
+                    <div class="prose prose-sm font-normal" set:html={post.content.rendered} />
                     
                   </div>
                 </div>
