@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ClickSounds from '../components/ClickSounds.astro';
 
 const res = await fetch("https://mixmixmix.ch/wp-json/wp/v2/posts/?per_page=100");
 const posts_raw = await res.json();
@@ -43,15 +42,6 @@ const randomPositions = postsWithImages.map((post: any) => {
   const y = (((seed >> 8) % 200) - 100); // Range: -100 to 100
   return { x, y };
 });
-
-// Fetch audio files from WordPress media library
-const audioRes = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?media_type=audio");
-const audioFiles = await audioRes.json();
-
-// Filter for audio files and get their URLs
-const soundUrls = audioFiles
-  .filter((media: any) => media.mime_type.startsWith('audio/'))
-  .map((media: any) => media.source_url);
 ---
 
 <Layout>
@@ -123,8 +113,6 @@ const soundUrls = audioFiles
           ))}
       </div>
     </main>
-
-    <ClickSounds soundUrls={soundUrls} />
 
 
 </Layout>
