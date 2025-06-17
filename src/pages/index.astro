@@ -63,7 +63,7 @@ const soundUrls = audioFiles
         <!-- Project list -->
           {postsWithImages.map((post: any, index: number) => (
               <div class="project-item group" data-project-category={post.class_list.pop()} data-project-id={post.id}>
-                <h2 id={post.id} class="select-none aria-expanded:color-[var(--c-highlight)] transition-colors text-3xl sm:text-4xl md:text-6xl lg:text-8xl">
+                <h2 id={post.id} class="select-none transition-colors text-3xl sm:text-4xl md:text-6xl lg:text-8xl"> {/* aria-expanded:color-[var(--c-highlight)] */}
                   {post.title.rendered}
                 </h2>
                 <!-- Expandable content that folds under title -->
