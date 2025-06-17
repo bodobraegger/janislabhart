@@ -112,7 +112,7 @@ audio {
 }
 
 
-.calendar-month h4 {
+.calendar-month-head {
     background: var(--c-bg-calendar);
 }
 

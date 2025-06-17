@@ -16,9 +16,9 @@ const processedEvents = events
       title: event.title.rendered.toUpperCase(),
       content: event.content.rendered.toUpperCase(),
       date: new Date(eventDate),
-      location: event.acf?.location.toUpperCase() || '',
+      location: event.acf?.location?.toUpperCase() || '',
       link: event.acf?.link || '',
-      details: event.acf?.details,
+      details: event.acf?.details?.toUpperCase() || '',
       slug: event.slug
     };
   });
@@ -63,34 +63,35 @@ const monthGroupsArray = Object.values(eventsByMonth).sort((a: any, b: any) => b
                   <!-- Combined header for first entry -->
                   <div class="grid grid-cols-12 gap-2">
                     <div class="col-span-1"><h4>{monthGroup.year}</h4></div>
-                    <div class="col-span-2">WORKS</div>
-                    <div class="col-span-6">DESCRIPTION</div>
-                    <div class="col-span-1">LINK</div>
-                    <div class="col-span-2">LOCATION</div>
+                    <div class="col-span-2 hidden md:block">WORKS</div>
+                    <div class="col-span-6 hidden md:block">DESCRIPTION</div>
+                    <div class="col-span-1 hidden md:block">LINK</div>
+                    <div class="col-span-2 hidden md:block">LOCATION</div>
                   </div>
                 ) : <h4>{monthGroup.year}</h4>}
                 
               </div>
             )}
 
-            <!-- Events for this month -->
+            <!-- Month header -->
+            {showMonth && (
+              <h4 class="calendar-month-head">
+                {monthGroup.month}
+              </h4>
+            )}
+
+            <!-- Events -->
             <div class="calendar-month">
-              <!-- Month head (only show if different from previous) -->
-              {showMonth && (
-                <h4 class="calendar-month-head ">
-                  {monthGroup.month}
-                </h4>
-              )}
               {monthGroup.events.map((event: any) => (
                 <div class="calendar-event grid grid-cols-12 gap-2 py-2 text-xs">
                   <!-- Date -->
-                  <div class="col-span-1">
+                  <div class="col-span-1 md:block gap-2">
                     {event.date.getDate().toString().padStart(2, '0')}
                   </div>
                   
-                  <!-- details/Works -->
-                  <div class="col-span-2">
-                    {event.details.toUpperCase()}
+                  <!-- Category/Works (desktop only) -->
+                  <div class="hidden md:block col-span-2">
+                    {event.details}
                   </div>
                   
                   <!-- Description -->
@@ -102,16 +103,14 @@ const monthGroupsArray = Object.values(eventsByMonth).sort((a: any, b: any) => b
                   </div>
                   
                   <!-- Link -->
-                  <div class="col-span-1">
+                  <div class="max-md:row-start-2 md:col-span-1 md:block">
                     {event.link && (
-                      <a href={event.link} target="_blank">
-                        🔗
-                      </a>
+                      <a href={event.link} target="_blank">🔗</a>
                     )}
                   </div>
                   
-                  <!-- Location -->
-                  <div class="col-span-2">
+                  <!-- Location (desktop only) -->
+                  <div class="max-md:row-start-2 md:col-span-2">
                     {event.location}
                   </div>
                 </div>
