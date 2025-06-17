@@ -72,7 +72,7 @@ const soundUrls = audioFiles
         )}
         
         {isWorksPage && (
-            <div class="works-dropdown transition-all duration-200 z-30 min-w-max">
+            <div class="works-dropdown transition-all duration-200 z-30 hidden">
                 <button class="category-btn" data-category="all">ALL</button>
                 {categories.map((category: any) => (
                     <button class="category-btn" data-category={category.slug}>
