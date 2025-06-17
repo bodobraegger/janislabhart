@@ -2,9 +2,10 @@
 const { soundUrls = [] } = Astro.props;
 ---
 
-<button id="sound-toggle" class="fixed top-0 right-0 p-4 text-xs md:text-sm z-20">
-    CLICK ;)
-</button>
+<div class="fixed top-0 right-0 p-4 text-xs md:text-sm z-20 select-none">
+    <input type="radio" id="sound-toggle"></input>
+    <label for="sound-toggle">CLICK ;)</label>
+</div>
 
 <script define:vars={{ soundUrls }}>
     let audioElements = [];
@@ -42,8 +43,8 @@ const { soundUrls = [] } = Astro.props;
         soundToggle?.addEventListener("click", (e) => {
             e.stopPropagation();
             soundEnabled = !soundEnabled;
-            soundToggle.textContent = soundEnabled ? "CLICK ;(" : "CLICK ;)";
-            soundToggle.style.opacity = soundEnabled ? "1" : "0.7";
+            document.querySelector('#sound-toggle ~ label').textContent = soundEnabled ? "CLICK ;(" : "CLICK ;)";
+            soundToggle.checked = soundEnabled;
         });
 
         document.addEventListener("click", (e) => {

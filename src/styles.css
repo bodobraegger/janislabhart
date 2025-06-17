@@ -63,6 +63,9 @@ h2:hover {
     background: var(--c-bg-works)
 }
 
+input[type="radio"] {
+    accent-color: var(--c-verlauf);
+}
 
 footer {
   mask-image: linear-gradient(to top, var(--c-bg) 50%, transparent 100%);
