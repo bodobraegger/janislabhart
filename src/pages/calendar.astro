@@ -50,8 +50,9 @@ const monthGroupsArray = Object.values(eventsByMonth).sort((a: any, b: any) => b
       
       <!-- Events grouped by month -->
       {monthGroupsArray.map((monthGroup: any, index: number) => {
-        const showYear = index === 0 || monthGroupsArray[index - 1].year !== monthGroup.year;
-        const showMonth = showYear || index === 0 || monthGroupsArray[index - 1].month !== monthGroup.month;
+        const prevMonthGroup = monthGroupsArray[index - 1] as any;
+        const showYear = index === 0 || prevMonthGroup.year !== monthGroup.year;
+        const showMonth = showYear || index === 0 || prevMonthGroup.month !== monthGroup.month;
         
         return (
           <div class="calendar">
