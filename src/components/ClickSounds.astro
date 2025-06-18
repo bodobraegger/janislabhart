@@ -47,6 +47,7 @@ const { soundUrls = [], cursors = [] } = Astro.props;
     function showCursor() {
         if (!cursors || cursors.length === 0) return;
 
+        currentCursorIndex = (currentCursorIndex + 1) % cursors.length;
         const cursor = cursors[currentCursorIndex];
         
         if (cursorImage && cursorFollower) {
@@ -57,10 +58,10 @@ const { soundUrls = [], cursors = [] } = Astro.props;
     }
 
     function hideCursor() {
-        currentCursorIndex = (currentCursorIndex + 1) % cursors.length;
-        if (cursorFollower) {
+        if (cursorImage && cursorFollower) {
             cursorFollower.classList.remove('opacity-100');
             cursorFollower.classList.add('opacity-0');
+            cursorImage.src = null;
         }
     }
 
