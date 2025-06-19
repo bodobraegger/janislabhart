@@ -101,12 +101,28 @@ footer {
     filter: grayscale(0);
 }
 
+main.about {
+    background: var(--c-bg-about);
+}
+
+
+.has-text-align-center {
+    text-align: center;
+}
+
 .figures {
     column-span: all;
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
     margin: 1rem 0;
+}
+
+.figures img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    object-position: center;
 }
 
 @media (min-width: 768px) {
