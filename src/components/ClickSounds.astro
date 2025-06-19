@@ -88,6 +88,11 @@ const { soundUrls = [], cursors = [] } = Astro.props;
             soundEnabled = !soundEnabled;
             document.querySelector('#sound-toggle ~ label').textContent = soundEnabled ? "CLICK ;(" : "CLICK ;)";
             soundToggle.checked = soundEnabled;
+            if (soundEnabled) {
+                showCursor();
+            } else {
+                hideCursor();
+            }
         });
 
         // Add mouse move listener
@@ -133,7 +138,7 @@ const { soundUrls = [], cursors = [] } = Astro.props;
         // Reset when sound ends
         selectedAudio.addEventListener("ended", () => {
             currentlyPlaying = null;
-            hideCursor();
+            // hideCursor();
         });
     }
 </script>
