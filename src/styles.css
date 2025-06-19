@@ -105,6 +105,9 @@ main.about {
     background: var(--c-bg-about);
 }
 
+.about a {
+    font-weight: bold;
+}
 
 .has-text-align-center {
     text-align: center;
