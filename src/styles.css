@@ -41,8 +41,14 @@ nav {
 nav a {
     display: block;
 }
-a:hover, button:hover {
+a, button {
+    transition-property: all;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration))
+}
+a:hover, button:hover, h2:hover, .clickSounds:hover {
     color: var(--c-highlight);
+    transform: scale(1.2, 1);
 }
 .category-btn {
     margin-left: 0.5rem;
@@ -52,11 +58,8 @@ a:hover, button:hover {
 h2 {
     scroll-margin-top: 7rem;
 }
-h2:hover {
-    color: var(--c-highlight);
-}
 
-*[aria-expanded="true"], .selected {
+.selected {
     color: var(--c-highlight);
 }
 
