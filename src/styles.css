@@ -52,7 +52,7 @@ a, button {
 }
 a:hover, button:hover, h2:hover, .clickSounds:hover {
     color: var(--c-highlight);
-    transform: scale(1, 1.2);
+    transform: scale(1, 1.3);
 }
 .category-btn {
     margin-left: 0.5rem;
