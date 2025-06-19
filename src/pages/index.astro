@@ -11,15 +11,24 @@ const posts = posts_raw
     const figureRegex = /<figure[^>]*>.*?<\/figure>/gs;
     const figures = post.content.rendered.match(figureRegex) || [];
 
-    // Remove figures from content
-    const cleanContent = post.content.rendered.replace(figureRegex, '');
+    // Filter figures to only include those with img tags (exclude audio, iframe, etc.)
+    const imageFigures = figures.filter(figureHtml => {
+      return figureHtml.includes('<img');
+    });
     
+
+    // Remove only image figures from content (keep audio/iframe figures)
+    let cleanContent = post.content.rendered;
+    imageFigures.forEach(figureHtml => {
+      cleanContent = cleanContent.replace(figureHtml, '');
+    });
+
     return {
       ...post,
       content: {
         ...post.content,
         rendered: cleanContent,
-        figures: figures
+        figures: imageFigures
       }
     };
   });
