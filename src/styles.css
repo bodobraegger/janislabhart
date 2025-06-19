@@ -110,8 +110,12 @@ footer {
 }
 
 @media (min-width: 768px) {
-    .figures {
+    .figures:has(> :nth-child(2)) {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        width: 90vw;
+        max-width: 1200px;
+        margin-left: 50%;
+        transform: translateX(-50%);
     }
 }
 
