@@ -5,7 +5,24 @@ const res = await fetch("https://mixmixmix.ch/wp-json/wp/v2/posts/?per_page=100"
 const posts_raw = await res.json();
 
 const posts = posts_raw
-  .filter((post: any) => post.class_list && post.class_list[post.class_list.length - 1] !== 'category-event');
+  .filter((post: any) => post.class_list && post.class_list[post.class_list.length - 1] !== 'category-event')
+  .map((post: any) => {
+    // Extract figures using regex
+    const figureRegex = /<figure[^>]*>.*?<\/figure>/gs;
+    const figures = post.content.rendered.match(figureRegex) || [];
+
+    // Remove figures from content
+    const cleanContent = post.content.rendered.replace(figureRegex, '');
+    
+    return {
+      ...post,
+      content: {
+        ...post.content,
+        rendered: cleanContent,
+        figures: figures
+      }
+    };
+  });
 
 // Fetch featured images for each post
 const postsWithImages = await Promise.all(
@@ -88,7 +105,14 @@ const randomPositions = postsWithImages.map((post: any) => {
                     )}
                     
                     <!-- Post content -->
-                    <div class="prose prose-sm font-normal" set:html={post.content.rendered} />
+                    <div class="prose prose-sm font-normal"> 
+                      <div class="content" set:html={post.content.rendered} />
+                      <div class="figures">
+                        {post.content.figures.map((figure: string) => (
+                          <Fragment set:html={figure} />
+                        ))}
+                      </div>
+                    </div>
                     
                   </div>
                 </div>
