@@ -27,10 +27,7 @@ const { initialDrone, soundUrls = [], cursors = [] } = Astro.props;
     function shuffle(theArray) {
         var tmp;
         for (var i = 0; i < theArray.length; i++) {
-            // Generate random index into the array:
             var j = Math.floor(Math.random() * theArray.length);
-
-            // Swap current item with random item:
             tmp = theArray[i];
             theArray[j] = theArray[i];
             theArray[i] = tmp;
@@ -40,7 +37,7 @@ const { initialDrone, soundUrls = [], cursors = [] } = Astro.props;
 
     function updateCursorPosition(e) {
         if (cursorFollower && isFollowing) {
-            cursorFollower.style.left = e.clientX+ 'px';
+            cursorFollower.style.left = e.clientX + 'px';
             cursorFollower.style.top = e.clientY + 'px';
             cursorFollower.style.transform = 'translate(-90%, -90%)';
         }
@@ -68,36 +65,50 @@ const { initialDrone, soundUrls = [], cursors = [] } = Astro.props;
     }
 
     function playInitialDrone() {
-        if (!initialDrone || droneHasPlayed) return;
+        if (!initialDrone || droneHasPlayed) {
+            console.log('No drone or already played');
+            return;
+        }
         
         droneAudio = new Audio(initialDrone);
         droneAudio.volume = 0.7;
-        droneAudio.play().catch((error) => {
+        droneAudio.play().then(() => {
+            console.log('Drone started playing');
+        }).catch((error) => {
             console.log("Drone audio play failed:", error);
         });
         
         droneHasPlayed = true;
         
-        // Remove from playing list when done
         droneAudio.addEventListener("ended", () => {
+            console.log('Drone finished');
             droneAudio = null;
         });
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+        // Debug logging
+        // console.log('Initial drone:', initialDrone);
+        // console.log('Sound URLs:', soundUrls);
+        // console.log('Cursors:', cursors);
+
         // Get cursor elements
         cursorFollower = document.getElementById('cursor-follower');
         cursorImage = document.getElementById('cursor-image');
  
         // Create audio elements from the server-side soundUrls
-        shuffle(soundUrls);
-        shuffle(cursors);
         if (soundUrls && soundUrls.length > 0) {
+            shuffle(soundUrls);
             audioElements = soundUrls.map((url) => {
+                // console.log('Creating audio element for:', url);
                 const audio = new Audio(url);
                 audio.volume = 0.7;
                 return audio;
             });
+        }
+
+        if (cursors && cursors.length > 0) {
+            shuffle(cursors);
         }
 
         const soundToggle = document.getElementById("sound-toggle");
@@ -132,12 +143,17 @@ const { initialDrone, soundUrls = [], cursors = [] } = Astro.props;
 
         document.addEventListener("click", (e) => {
             if (!soundEnabled || audioElements.length === 0) return;
+            
             // Ignore clicks on links or buttons
             if (
                 e.target.tagName === "A" ||
                 e.target.tagName === "BUTTON" ||
+                e.target.tagName === "INPUT" ||
+                e.target.tagName === "LABEL" ||
                 e.target.closest("a") ||
-                e.target.closest("button")
+                e.target.closest("button") ||
+                e.target.closest("input") ||
+                e.target.closest("label")
             ) {
                 return;
             }
@@ -148,14 +164,16 @@ const { initialDrone, soundUrls = [], cursors = [] } = Astro.props;
     });
 
     function playSound() {
-        if (audioElements.length === 0) return;
+        if (audioElements.length === 0) {
+            console.warn('No audio elements available');
+            return;
+        }
         
         // Remove finished sounds from playing list
         playingAudios = playingAudios.filter(audio => !audio.ended);
         
         // Only allow up to 4 sounds playing at once
         if (playingAudios.length >= 4) {
-            // Stop the oldest sound
             const oldestAudio = playingAudios.shift();
             oldestAudio.pause();
             oldestAudio.currentTime = 0;
@@ -165,11 +183,15 @@ const { initialDrone, soundUrls = [], cursors = [] } = Astro.props;
         const selectedAudio = audioElements[currentSoundIndex];
 
         // Clone the audio to allow multiple instances
-        const audioClone = selectedAudio.cloneNode();
+        const audioClone = new Audio(selectedAudio.src);
         audioClone.volume = 0.7;
 
+        // console.log('Playing audio:', audioClone.src);
+
         // Play the sound
-        audioClone.play().catch((error) => {
+        audioClone.play().then(() => {
+            // console.log('Audio started playing');
+        }).catch((error) => {
             console.log("Audio play failed:", error);
         });
 
