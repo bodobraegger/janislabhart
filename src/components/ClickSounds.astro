@@ -1,5 +1,5 @@
 ---
-const { soundUrls = [], cursors = [] } = Astro.props;
+const { initialDrone, soundUrls = [], cursors = [] } = Astro.props;
 ---
 
 <div class="fixed top-0 right-0 p-4 text-xs md:text-sm z-20 select-none">
@@ -12,15 +12,17 @@ const { soundUrls = [], cursors = [] } = Astro.props;
     <img id="cursor-image" src="" alt="" class="w-8 h-8 object-contain">
 </div>
 
-<script define:vars={{ soundUrls, cursors }}>
+<script define:vars={{ soundUrls, cursors, initialDrone }}>
     let audioElements = [];
-    let currentlyPlaying = null;
+    let droneAudio = null;
+    let playingAudios = []; // Track multiple playing sounds
     let soundEnabled = false;
     let currentSoundIndex = -1;
     let currentCursorIndex = -1;
     let cursorFollower = null;
     let cursorImage = null;
     let isFollowing = true;
+    let droneHasPlayed = false;
 
     function shuffle(theArray) {
         var tmp;
@@ -65,6 +67,23 @@ const { soundUrls = [], cursors = [] } = Astro.props;
         }
     }
 
+    function playInitialDrone() {
+        if (!initialDrone || droneHasPlayed) return;
+        
+        droneAudio = new Audio(initialDrone);
+        droneAudio.volume = 0.7;
+        droneAudio.play().catch((error) => {
+            console.log("Drone audio play failed:", error);
+        });
+        
+        droneHasPlayed = true;
+        
+        // Remove from playing list when done
+        droneAudio.addEventListener("ended", () => {
+            droneAudio = null;
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
         // Get cursor elements
         cursorFollower = document.getElementById('cursor-follower');
@@ -88,10 +107,23 @@ const { soundUrls = [], cursors = [] } = Astro.props;
             soundEnabled = !soundEnabled;
             document.querySelector('#sound-toggle ~ label').textContent = soundEnabled ? "CLICK ;(" : "CLICK ;)";
             soundToggle.checked = soundEnabled;
+            
             if (soundEnabled) {
                 showCursor();
+                playInitialDrone();
             } else {
                 hideCursor();
+                // Stop all sounds
+                if (droneAudio) {
+                    droneAudio.pause();
+                    droneAudio.currentTime = 0;
+                }
+                playingAudios.forEach(audio => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                });
+                playingAudios = [];
+                droneHasPlayed = false;
             }
         });
 
@@ -117,28 +149,39 @@ const { soundUrls = [], cursors = [] } = Astro.props;
 
     function playSound() {
         if (audioElements.length === 0) return;
-        currentSoundIndex = (currentSoundIndex + 1) % audioElements.length;
-
-        // Stop currently playing sound
-        if (currentlyPlaying) {
-            currentlyPlaying.pause();
-            currentlyPlaying.currentTime = 0;
+        
+        // Remove finished sounds from playing list
+        playingAudios = playingAudios.filter(audio => !audio.ended);
+        
+        // Only allow up to 4 sounds playing at once
+        if (playingAudios.length >= 4) {
+            // Stop the oldest sound
+            const oldestAudio = playingAudios.shift();
+            oldestAudio.pause();
+            oldestAudio.currentTime = 0;
         }
-
-        // Pick random sound
+        
+        currentSoundIndex = (currentSoundIndex + 1) % audioElements.length;
         const selectedAudio = audioElements[currentSoundIndex];
 
+        // Clone the audio to allow multiple instances
+        const audioClone = selectedAudio.cloneNode();
+        audioClone.volume = 0.7;
+
         // Play the sound
-        selectedAudio.play().catch((error) => {
+        audioClone.play().catch((error) => {
             console.log("Audio play failed:", error);
         });
 
-        currentlyPlaying = selectedAudio;
+        // Add to playing list
+        playingAudios.push(audioClone);
 
-        // Reset when sound ends
-        selectedAudio.addEventListener("ended", () => {
-            currentlyPlaying = null;
-            // hideCursor();
+        // Remove from playing list when finished
+        audioClone.addEventListener("ended", () => {
+            const index = playingAudios.indexOf(audioClone);
+            if (index > -1) {
+                playingAudios.splice(index, 1);
+            }
         });
     }
 </script>

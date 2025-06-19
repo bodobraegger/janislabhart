@@ -14,15 +14,20 @@ const categories = categories_raw
 const isWorksPage = Astro.url.pathname === import.meta.env.BASE_URL || Astro.url.pathname === `${import.meta.env.BASE_URL}/`;
 
 // Fetch audio files from WordPress media library
-const audioRes = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?media_type=audio");
+const audioRes = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?&per_page=100&media_type=audio");
 const audioFiles = await audioRes.json();
+
+const initialDrone = audioFiles.find((media: any) => media.slug === 'langerdronefuranfang').source_url || null;
+
+
 
 // Filter for audio files and get their URLs
 const soundUrls = audioFiles
-  .filter((media: any) => media.mime_type.startsWith('audio/'))
-  .map((media: any) => media.source_url);
+.filter((media: any) => media.mime_type.startsWith('audio/'))
+.map((media: any) => media.source_url);
+soundUrls.splice(soundUrls.indexOf(initialDrone), 1); // Remove the initial drone from the list of sound URLs
 
-const cursors = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?media_type=image")
+const cursors = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?&per_page=100&media_type=image")
     .then(res => res.json())
     .then(media => media.filter((m: any) => m.slug.startsWith('cursor_')))
     .catch(err => {
