@@ -35,7 +35,7 @@ header {
     mask-image: linear-gradient(to bottom, var(--c-bg) 50%, transparent 100%);
 }
 header a {
-    display: block;
+    display: inline-block;
 }
 
 nav {
@@ -85,6 +85,10 @@ footer {
     word-break: normal;
     hyphens: auto;
     hyphenate-limit-chars: 6 3 3;
+}
+
+.prose p > a {
+    display: inline-block;
 }
 
 @media (min-width: 768px) {
