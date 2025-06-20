@@ -51,6 +51,9 @@ a, button {
     transition-duration: var(--tw-duration, var(--default-transition-duration))
 }
 .clickSounds {
+    cursor: copy;
+}
+.clickSounds * {
     cursor: help;
 }
 a:hover, button:hover, h2:hover, .clickSounds:hover {
