@@ -64,7 +64,7 @@ function hashString(str: string): number {
 // Generate consistent pseudorandom positions based on post ID
 const randomPositions = postsWithImages.map((post: any) => {
   const seed = hashString(post.id.toString() + post.title.rendered);
-  const x = ((seed % 200) - 100); // Range: -100 to 100
+  const x = ((seed % 100) - 50); // Range: -100 to 100
   const y = (((seed >> 8) % 100) - 100); // Range: -100 to 0
   return { x, y };
 });
