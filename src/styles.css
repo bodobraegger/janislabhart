@@ -168,6 +168,9 @@ iframe {
 iframe[src*="soundcloud.com"] {
     height: 166px;
 }
+iframe[src*="vimeo.com"] {
+    height: 360px;
+}
 
 audio {
     width: 100%;
