@@ -134,6 +134,11 @@ body:has(.about) {
 
 .about a {
     font-weight: bold;
+    transition: all;
+}
+.about a:hover {
+    color: var(--c-highlight);
+    transform: scale(1, 1.3);
 }
 
 .has-text-align-center {
@@ -171,6 +176,9 @@ iframe {
 }
 iframe[src*="soundcloud.com"] {
     height: 166px;
+}
+iframe[src*="vimeo.com"] {
+    height: 360px;
 }
 
 audio {
