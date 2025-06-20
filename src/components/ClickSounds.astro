@@ -71,7 +71,7 @@ const { initialDrone, soundUrls = [], cursors = [] } = Astro.props;
         }
         
         droneAudio = new Audio(initialDrone);
-        droneAudio.volume = 0.7;
+        droneAudio.volume = 0.6;
         droneAudio.play().then(() => {
             console.log('Drone started playing');
         }).catch((error) => {
