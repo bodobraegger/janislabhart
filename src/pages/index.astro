@@ -65,7 +65,7 @@ function hashString(str: string): number {
 const randomPositions = postsWithImages.map((post: any) => {
   const seed = hashString(post.id.toString() + post.title.rendered);
   const x = ((seed % 200) - 100); // Range: -100 to 100
-  const y = (((seed >> 8) % 100)); // Range: -0 to 100
+  const y = (((seed >> 8) % 100) - 100); // Range: -100 to 0
   return { x, y };
 });
 ---
@@ -85,7 +85,7 @@ const randomPositions = postsWithImages.map((post: any) => {
                 <!-- Project image preview - appears on hover at pseudorandom position -->
                 <div 
                   class="preview-image absolute opacity-0 not-group-has-aria-expanded:peer-hover:opacity-90 transition-opacity hidden lg:block z-50"
-                  style={`transform: translate(calc(${randomPositions[index].x}px), calc(${randomPositions[index].y}px - 100%));`}
+                  style={`transform: translate(calc(${randomPositions[index].x}px), calc(${randomPositions[index].y}px - 50%));`}
                 >
                   <div class="w-48 h-64">
                     {post.featuredImage && (
