@@ -119,6 +119,11 @@ footer {
     filter: grayscale(0);
 }
 
+.prose figure {
+    column-span: all;
+}
+
+
 body:has(.about) {
     background: var(--c-bg-about);
 }
