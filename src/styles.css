@@ -119,8 +119,9 @@ footer {
     filter: grayscale(0);
 }
 
-.prose figure {
+.prose .content figure {
     column-span: all;
+    margin-top: 1rem;
 }
 
 
