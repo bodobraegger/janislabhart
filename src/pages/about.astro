@@ -24,9 +24,8 @@ const aboutTitle = aboutPage?.title?.rendered || 'About';
 ---
 
 <Layout>
-    <!-- Main content area -->
-    <main class="about flex justify-center mx-4">
-      <div class="w-full max-w-4xl">
+    <div class="about flex justify-center">
+      <div class="w-full ">
         <!-- About content from WordPress -->
         <div class="font-normal text-xs md:text-sm leading-relaxed space-y-4 md:space-y-6 mb-12">
           <div set:html={aboutContent} />
@@ -44,5 +43,5 @@ const aboutTitle = aboutPage?.title?.rendered || 'About';
             </figure>
           )}
       </div>
-    </main>
+    </div>
 </Layout>

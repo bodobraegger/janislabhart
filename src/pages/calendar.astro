@@ -45,8 +45,7 @@ const monthGroupsArray = Object.values(eventsByMonth).sort((a: any, b: any) => b
 ---
 
 <Layout>
-  <main class="px-4 py-8">
-    <div class="calendar max-w-6xl mx-auto">
+    <div class="calendar">
       
       <!-- Events grouped by month -->
       {monthGroupsArray.map((monthGroup: any, index: number) => {
@@ -120,5 +119,4 @@ const monthGroupsArray = Object.values(eventsByMonth).sort((a: any, b: any) => b
         );
       })}
     </div>
-  </main>
 </Layout>

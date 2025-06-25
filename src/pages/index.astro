@@ -71,10 +71,7 @@ const randomPositions = postsWithImages.map((post: any) => {
 ---
 
 <Layout>
-    <!-- Navigation -->
-
-    <!-- Main content area -->
-    <main class="flex items-center justify-center pb-14">
+    <div class="flex items-center justify-center">
       <div class="text-center w-full relative">
         <!-- Project list -->
           {postsWithImages.map((post: any, index: number) => (
@@ -101,7 +98,7 @@ const randomPositions = postsWithImages.map((post: any) => {
 
                 <!-- Expandable content that folds under title -->
                 <div class="project-content max-h-0 overflow-hidden transition-all opacity-0">
-                  <div class="py-8 px-4 text-sm md:text-base max-w-2xl mx-auto">
+                  <div class="px-8 py-8">
                     <!-- Featured image -->
                     {/* {post.featuredImage && (
                       <div class="mb-6">
@@ -146,7 +143,7 @@ const randomPositions = postsWithImages.map((post: any) => {
               
           ))}
       </div>
-    </main>
+    </div>
 
 
 </Layout>
