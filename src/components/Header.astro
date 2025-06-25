@@ -1,6 +1,8 @@
 ---
 import ClickSounds from './ClickSounds.astro';
 
+const baseUrlNoTrailingSlash = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 const categories_raw = await fetch('https://mixmixmix.ch/wp-json/wp/v2/categories')
     .then(res => res.json())
     .catch(err => {
@@ -11,7 +13,7 @@ const categories_raw = await fetch('https://mixmixmix.ch/wp-json/wp/v2/categorie
 const categories = categories_raw
     .filter((category: any) => category.slug !== 'uncategorized' && category.slug !== 'event')
     .sort((a: any, b: any) => a.name.localeCompare(b.name));
-const isWorksPage = Astro.url.pathname === import.meta.env.BASE_URL || Astro.url.pathname === `${import.meta.env.BASE_URL}/`;
+const isWorksPage = Astro.url.pathname === baseUrlNoTrailingSlash || Astro.url.pathname === `${baseUrlNoTrailingSlash}/`;
 
 // Fetch audio files from WordPress media library
 const audioRes = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?&per_page=100&media_type=audio");
@@ -40,7 +42,7 @@ const cursors = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?&per_page=
 <header class="min-h-28 sticky top-0 backdrop-blur-sm z-20">
 
 <h1 class="p-4 text-center backdrop-blur-sm">
-    <a href={import.meta.env.BASE_URL}>JANIS LABHART</a>
+    <a href={baseUrlNoTrailingSlash}>JANIS LABHART</a>
 </h1>
 
 <script>
@@ -82,7 +84,7 @@ const cursors = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?&per_page=
         {isWorksPage ? (
             <button class="works-dropdown-btn cursor-pointer hover:opacity-70">WORKS</button>
         ) : (
-            <a href={import.meta.env.BASE_URL} class="hover:opacity-70">WORKS</a>
+            <a href={baseUrlNoTrailingSlash} class="hover:opacity-70">WORKS</a>
         )}
         
         {isWorksPage && (
@@ -96,8 +98,8 @@ const cursors = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?&per_page=
             </div>
         )}
     </div>
-    <a href={`${import.meta.env.BASE_URL}/about`}>ABOUT</a>
-    <a href={`${import.meta.env.BASE_URL}/calendar`}>CALENDER</a>
+    <a href={`${baseUrlNoTrailingSlash}/about`}>ABOUT</a>
+    <a href={`${baseUrlNoTrailingSlash}/calendar`}>CALENDER</a>
 </nav>
 
 <ClickSounds initialDrone={initialDrone} soundUrls={soundUrls} cursors={cursors} />
