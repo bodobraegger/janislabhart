@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'Bandit';
+    src: url('./assets/fonts/Bandit-Condensed.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+    size-adjust: 180%;
+}
+
+@font-face {
+    font-family: 'Selecta';
+    src: url('./assets/fonts/Selecta-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
