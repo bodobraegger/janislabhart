@@ -145,39 +145,43 @@ body:has(.about) {
 
 .figures {
     column-span: all;
-    display: flex;
-    gap: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem 2rem;
     margin: 1rem 0;
-    align-items: center;
-    justify-content: center;
+}
+
+.figures img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    object-position: center;
+}
+
+@media (min-width: 768px) {
+    .figures:has(> :nth-child(2)) {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        width: 90vw;
+        max-width: 1200px;
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
 }
 
 .figures > figure {
     margin: 0;
 }
 
-figure {
-    width: 608px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.figures img {
-    aspect-ratio: 16/9;
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
-}
-
 iframe {
     width: 100%;
     column-span: all;
+    height: fit-content;
 }
 iframe[src*="soundcloud.com"] {
-    height: 166px;
+    max-height: 166px;
 }
 iframe[src*="vimeo.com"] {
-    height: 360px;
+    max-height: 360px;
 }
 
 audio {
