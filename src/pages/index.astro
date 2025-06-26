@@ -226,6 +226,11 @@ const randomPositions = postsWithImages.map((post: any) => {
     const category = `category-${(event as CustomEvent).detail.category}`;
 
     document.querySelectorAll('.project-item').forEach(item => {
+      // collapse all items
+      const content = item.querySelector('.project-content');
+      const title = item.querySelector('h2');
+      title!.ariaExpanded = 'false';
+      content!.classList.add('max-h-0', 'opacity-0');
       if (category === 'category-all') {
         item.classList.remove('hidden');
         return;
