@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const res = await fetch("https://mixmixmix.ch/wp-json/wp/v2/posts/?per_page=100");
+const res = await fetch("https://api.janislabhart.ch/wp-json/wp/v2/posts/?per_page=100");
 const posts_raw = await res.json();
 
 const posts = posts_raw
@@ -55,7 +55,7 @@ const postsWithImages = await Promise.all(
     let featuredImage = null;
     if (post.featured_media) {
       try {
-        const mediaRes = await fetch(`https://mixmixmix.ch/wp-json/wp/v2/media/${post.featured_media}`);
+        const mediaRes = await fetch(`https://api.janislabhart.ch/wp-json/wp/v2/media/${post.featured_media}`);
         const media = await mediaRes.json();
         featuredImage = media.source_url;
       } catch (error) {

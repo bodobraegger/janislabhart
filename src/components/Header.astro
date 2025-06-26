@@ -4,7 +4,7 @@ import ClickSounds from './ClickSounds.astro';
 const baseUrlNoTrailingSlash = import.meta.env.BASE_URL.replace(/\/$/, '');
 const homeUrl = baseUrlNoTrailingSlash || '/';
 
-const categories_raw = await fetch('https://mixmixmix.ch/wp-json/wp/v2/categories')
+const categories_raw = await fetch('https://api.janislabhart.ch/wp-json/wp/v2/categories')
     .then(res => res.json())
     .catch(err => {
         console.error('Error fetching categories:', err);
@@ -17,7 +17,7 @@ const categories = categories_raw
 const isWorksPage = Astro.url.pathname === baseUrlNoTrailingSlash || Astro.url.pathname === `${baseUrlNoTrailingSlash}/`;
 
 // Fetch audio files from WordPress media library
-const audioRes = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?&per_page=100&media_type=audio");
+const audioRes = await fetch("https://api.janislabhart.ch/wp-json/wp/v2/media?&per_page=100&media_type=audio");
 const audioFiles = await audioRes.json();
 
 const initialDrone = audioFiles.find((media: any) => media.slug === 'langerdronefuranfang').source_url || null;
@@ -30,7 +30,7 @@ const soundUrls = audioFiles
 .map((media: any) => media.source_url);
 soundUrls.splice(soundUrls.indexOf(initialDrone), 1); // Remove the initial drone from the list of sound URLs
 
-const cursors = await fetch("https://mixmixmix.ch/wp-json/wp/v2/media?&per_page=100&media_type=image")
+const cursors = await fetch("https://api.janislabhart.ch/wp-json/wp/v2/media?&per_page=100&media_type=image")
     .then(res => res.json())
     .then(media => media.filter((m: any) => m.slug.startsWith('cursor_')))
     .catch(err => {

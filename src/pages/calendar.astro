@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 
 // Fetch calendar events from WordPress
-const eventsRes = await fetch("https://mixmixmix.ch/wp-json/wp/v2/posts?per_page=100");
+const eventsRes = await fetch("https://api.janislabhart.ch/wp-json/wp/v2/posts?per_page=100");
 const events = await eventsRes.json();
 
 // Process events

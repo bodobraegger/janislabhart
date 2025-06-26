@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 
 // Fetch about page content from WordPress
-const aboutRes = await fetch("https://mixmixmix.ch/wp-json/wp/v2/pages?slug=about");
+const aboutRes = await fetch("https://api.janislabhart.ch/wp-json/wp/v2/pages?slug=about");
 const aboutData = await aboutRes.json();
 const aboutPage = aboutData[0]; // Get the first (and likely only) result
 
@@ -13,7 +13,7 @@ const aboutTitle = aboutPage?.title?.rendered || 'About';
   let featuredImage = null;
   if (aboutPage.featured_media) {
     try {
-      const mediaRes = await fetch(`https://mixmixmix.ch/wp-json/wp/v2/media/${aboutPage.featured_media}`);
+      const mediaRes = await fetch(`https://api.janislabhart.ch/wp-json/wp/v2/media/${aboutPage.featured_media}`);
       const media = await mediaRes.json();
       featuredImage = media.source_url;
     } catch (error) {
