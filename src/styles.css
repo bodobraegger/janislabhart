@@ -161,10 +161,21 @@ body:has(.about) {
 @media (min-width: 768px) {
     .figures:has(> :nth-child(2)) {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        width: 90vw;
-        max-width: 1200px;
-        margin-left: 50%;
-        transform: translateX(-50%);
+    }
+    .figures:has(> :nth-child(4)) {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .figures:has(> :nth-child(4)) > figure {
+        flex: 0 0 calc(50% - 1rem);
+        max-width: 400px;
+    }
+    
+    .figures:has(> :nth-child(4)) > figure {
+        flex: 0 0 calc(33.333% - 1.33rem);
+        max-width: 360px;
     }
 }
 
