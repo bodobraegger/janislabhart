@@ -166,7 +166,14 @@ body:has(.about) {
         margin: 1rem auto 0;
         container: figures-grid / inline-size;
     }
-    /* 3 Column Layouts, manual use uf --min-width and --grid-gap*/ 
+    /* 2 Column Layouts, manual use uf --min-width and --grid-gap */
+    @container figures-grid (min-width: calc(400px*2 + 2rem*1)) {
+        /* Dealing with 1 orphan item */
+        .figures > figure:last-child:nth-child(2n + 1) {
+            grid-column-end: 4;
+        }
+    }
+    /* 3 Column Layouts, manual use uf --min-width and --grid-gap */
     @container figures-grid (min-width: calc(400px*3 + 2rem*2)) {
         /* Dealing with 1 orphan item */
         .figures > figure:last-child:nth-child(3n + 1) {
