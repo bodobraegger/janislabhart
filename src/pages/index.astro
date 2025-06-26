@@ -15,10 +15,26 @@ const posts = posts_raw
     const imageFigures = figures.filter(figureHtml => {
       return figureHtml.includes('<img');
     });
+    const iframeFigures = figures.filter(figureHtml => {
+      return figureHtml.includes('<iframe');
+    });
+    let cleanContent = post.content.rendered;
+    
+    iframeFigures.forEach(iframeHtml => {
+      // Remove iframe figures from content
+      cleanContent = cleanContent.replace(iframeHtml, '');
+      // remove width and height attributes from iframes
+      iframeHtml = iframeHtml.replace(/width="\d+"\s*height="\d+"/, '');
+      // remove <div class="wp-block-embed__wrapper">
+      iframeHtml = iframeHtml.replace(/<div class="wp-block-embed__wrapper">/, '');
+      // remove </div>
+      iframeHtml = iframeHtml.replace(/<\/div>/, '');
+      // Add iframe to figures
+      imageFigures.push(iframeHtml);
+    });
     
 
     // Remove only image figures from content (keep audio/iframe figures)
-    let cleanContent = post.content.rendered;
     imageFigures.forEach(figureHtml => {
       cleanContent = cleanContent.replace(figureHtml, '');
     });
