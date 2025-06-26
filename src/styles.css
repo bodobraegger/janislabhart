@@ -162,6 +162,11 @@ body:has(.about) {
 }
 
 @media (min-width: 768px) {
+    .figures > figure:only-child {
+        width: calc(50% - 2rem);
+        margin: 0 auto;
+        grid-column: span 1;
+    }
     .figures:has(> :nth-child(2)) {
         grid-template-columns: repeat(auto-fit, minmax(min(calc((var(--min-width) - var(--grid-gap))/2),calc((100% - var(--grid-gap)) / 2)),1fr));
         margin: 1rem auto 0;
@@ -193,11 +198,6 @@ body:has(.about) {
     grid-column: span 2;
 }
 
-.figures > figure:only-child {
-    width: calc(50% - 2rem);
-    margin: 0 auto;
-    grid-column: span 1;
-}
 
 /* iframe[src*="soundcloud.com"] {
     max-height: 166px;
