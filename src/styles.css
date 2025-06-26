@@ -146,9 +146,11 @@ body:has(.about) {
 .figures {
     column-span: all;
     display: grid;
-    grid-template-columns: 1fr;
     gap: 1rem 2rem;
     margin: 1rem 0;
+    grid-template-columns: 1fr;
+    --min-width: 400px;
+    --grid-gap: 2rem;
 }
 
 .figures img {
@@ -160,31 +162,33 @@ body:has(.about) {
 
 @media (min-width: 768px) {
     .figures:has(> :nth-child(2)) {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(calc((var(--min-width) - var(--grid-gap))/2),calc((100% - var(--grid-gap)) / 2)),1fr));
+        margin: 1rem auto 0;
+        container: figures-grid / inline-size;
     }
-    .figures:has(> :nth-child(4)) {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+}
+
+/* 3 Column Layouts, manual use uf --min-width and --grid-gap*/ 
+@container figures-grid (min-width: calc(400px*3 + 2rem*2)) {
+    /* Dealing with 1 orphan item */
+    .figures > figure:last-child:nth-child(3n + 1) {
+        grid-column-end: 5;
     }
-    
-    .figures:has(> :nth-child(4)) > figure {
-        flex: 0 0 calc(50% - 1rem);
-        max-width: 400px;
-    }
-    
-    .figures:has(> :nth-child(4)) > figure {
-        flex: 0 0 calc(33.333% - 1.33rem);
-        max-width: 360px;
+    /* Dealing with 2 orphan items */
+    .figures > figure:nth-last-child(2):nth-child(3n + 1) {
+        grid-column-end: 4;
     }
 }
 
 .figures > figure {
     margin: 0;
+    grid-column: span 2;
 }
+
 .figures > figure:only-child {
     width: calc(50% - 2rem);
     margin: 0 auto;
+    grid-column: span 1;
 }
 
 iframe {
