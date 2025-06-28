@@ -60,7 +60,7 @@ const monthGroupsArray = Object.values(eventsByMonth).sort((a: any, b: any) => b
               <div class="calendar-year-head">
                 {index === 0 ? (
                   <!-- Combined header for first entry -->
-                  <div class="grid grid-cols-23 gap-2">
+                  <div class="grid grid-cols-23 gap-x-2">
                     <div class="col-span-2"><h4>{monthGroup.year}</h4></div>
                     <div class="col-span-4 hidden md:block">WORKS</div>
                     <div class="col-span-12 hidden md:block">DESCRIPTION</div>
@@ -82,9 +82,9 @@ const monthGroupsArray = Object.values(eventsByMonth).sort((a: any, b: any) => b
             <!-- Events -->
             <div class="calendar-month">
               {monthGroup.events.map((event: any) => (
-                <div class="calendar-event grid grid-cols-23 gap-2 py-2">
+                <div class="calendar-event grid grid-cols-23 gap-x-2 py-2">
                   <!-- Date -->
-                  <div class="col-span-2 md:block">
+                  <div class="col-span-2">
                     {event.date.getDate().toString().padStart(2, '0')}
                   </div>
 
