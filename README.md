@@ -5,14 +5,15 @@ Design by Lara Koller
 
 ## Todos:
 
-- [ ] Fetch /about data from API
+- [x] Fetch /about data from API
 - [x] Move all styles to [/src/styles.css](/src/styles.css) - will get rid of data-astro... attributes
 - [ ] Add a favicon
-- [ ] Calendar
+- [x] Calendar
 - [x] Test work categories, implement filtering
 - [x] play random sounds on click with toggle
-  - [ ] change cursor to smiling note on click
-- [ ] add fonts
+  - [x] change cursor to smiling note on click
+- [x] add fonts
+  - [ ] final version
 - [x] work metadata like links / specs
 
 
