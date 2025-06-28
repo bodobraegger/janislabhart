@@ -60,12 +60,12 @@ const monthGroupsArray = Object.values(eventsByMonth).sort((a: any, b: any) => b
               <div class="calendar-year-head">
                 {index === 0 ? (
                   <!-- Combined header for first entry -->
-                  <div class="grid grid-cols-12 gap-2">
-                    <div class="col-span-1"><h4>{monthGroup.year}</h4></div>
-                    <div class="col-span-2 hidden md:block">WORKS</div>
-                    <div class="col-span-6 hidden md:block">DESCRIPTION</div>
+                  <div class="grid grid-cols-23 gap-2">
+                    <div class="col-span-2"><h4>{monthGroup.year}</h4></div>
+                    <div class="col-span-4 hidden md:block">WORKS</div>
+                    <div class="col-span-12 hidden md:block">DESCRIPTION</div>
+                    <div class="col-span-4 hidden md:block">LOCATION</div>
                     <div class="col-span-1 hidden md:block">LINK</div>
-                    <div class="col-span-2 hidden md:block">LOCATION</div>
                   </div>
                 ) : <h4>{monthGroup.year}</h4>}
                 
@@ -82,35 +82,35 @@ const monthGroupsArray = Object.values(eventsByMonth).sort((a: any, b: any) => b
             <!-- Events -->
             <div class="calendar-month">
               {monthGroup.events.map((event: any) => (
-                <div class="calendar-event grid grid-cols-12 gap-2 py-2 text-xs">
+                <div class="calendar-event grid grid-cols-23 gap-2 py-2">
                   <!-- Date -->
-                  <div class="col-span-1 md:block gap-2">
+                  <div class="col-span-2 md:block">
                     {event.date.getDate().toString().padStart(2, '0')}
                   </div>
-                  
+
                   <!-- Category/Works (desktop only) -->
-                  <div class="hidden md:block col-span-2">
+                  <div class="hidden md:block col-span-4">
                     {event.details}
                   </div>
-                  
+
                   <!-- Description -->
-                  <div class="col-span-6">
+                  <div class="col-span-12">
                     <div>{event.title}</div>
                     {event.content && (
                       <div class="font-normal" set:html={event.content} />
                     )}
                   </div>
-                  
+
+                  <!-- Location (desktop only) -->
+                  <div class="max-md:row-start-2 max-md:col-start-3 col-span-4">
+                    {event.location}
+                  </div>
+
                   <!-- Link -->
-                  <div class="max-md:row-start-2 md:col-span-1 md:block">
+                  <div class="max-md:row-start-2 col-span-1">
                     {event.link && (
                       <a href={event.link} target="_blank">↗</a>
                     )}
-                  </div>
-                  
-                  <!-- Location (desktop only) -->
-                  <div class="max-md:row-start-2 md:col-span-2">
-                    {event.location}
                   </div>
                 </div>
               ))}
