@@ -10,13 +10,16 @@
     --c-bg-works: linear-gradient(180deg, transparent 8.17%, var(--c-verlauf) 58.65%, transparent 100%);
     --c-highlight: #929292;
     --image-filters: grayscale(100%) brightness(0.9) contrast(1.1) invert(1) drop-shadow(0 0 0.5rem rgb(255, 255, 255));
+    --container-8xl: 100rem;
 }
 
 .font-bold {
     font-family: 'Bandit', sans-serif;
+    letter-spacing: 0.5px;
 }
 .font-normal {
     font-family: 'Selecta', sans-serif;
+    letter-spacing: -0.25px;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

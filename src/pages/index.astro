@@ -87,7 +87,7 @@ const randomPositions = postsWithImages.map((post: any) => {
 ---
 
 <Layout>
-    <div class="flex items-center justify-center">
+    <main class="flex items-center justify-center">
       <div class="text-center w-full relative">
         <!-- Project list -->
           {postsWithImages.map((post: any, index: number) => (
@@ -144,7 +144,7 @@ const randomPositions = postsWithImages.map((post: any) => {
                     )}
                     
                     <!-- Post content -->
-                    <div class="prose prose-sm font-normal"> 
+                    <div class="prose prose-sm font-normal max-w-(--container-8xl) mx-auto"> 
                       <div class="content" set:html={post.content.rendered} />
                       <div class="figures">
                         {post.content.figures.map((figure: string) => (
@@ -159,7 +159,7 @@ const randomPositions = postsWithImages.map((post: any) => {
               
           ))}
       </div>
-    </div>
+    </main>
 
 
 </Layout>
