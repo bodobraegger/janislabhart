@@ -66,6 +66,14 @@ const postsWithImages = await Promise.all(
   })
 );
 
+const postsWithImagesSorted = postsWithImages.sort((a: any, b: any) => {
+  // Sort by alpha-numeric order of slug, they are enforced to be unique
+  const slugA = a.slug.toLowerCase();
+  const slugB = b.slug.toLowerCase();
+  if (slugA < slugB) return -1;
+  else return 1;
+});
+
 // Simple hash function for consistent pseudorandom positions
 function hashString(str: string): number {
   let hash = 0;
@@ -78,7 +86,7 @@ function hashString(str: string): number {
 }
 
 // Generate consistent pseudorandom positions based on post ID
-const randomPositions = postsWithImages.map((post: any) => {
+const randomPositions = postsWithImagesSorted.map((post: any) => {
   const seed = hashString(post.id.toString() + post.title.rendered);
   const x = ((seed % 100) - 50); // Range: -100 to 100
   const y = (((seed >> 8) % 100) - 100); // Range: -100 to 0
@@ -90,7 +98,7 @@ const randomPositions = postsWithImages.map((post: any) => {
     <main class="flex items-center justify-center">
       <div class="text-center w-full relative">
         <!-- Project list -->
-          {postsWithImages.map((post: any, index: number) => (
+          {postsWithImagesSorted.map((post: any, index: number) => (
               <div class="project-item group" data-project-category={post.class_list.pop()} data-project-id={post.id}>
                 <h2 id={post.id} class="peer select-none transition-all text-3xl sm:text-4xl md:text-6xl lg:text-8xl"> {/* aria-expanded:color-[var(--c-highlight)] */}
                   {post.title.rendered}
