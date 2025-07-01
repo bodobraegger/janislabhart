@@ -20,7 +20,8 @@ const isWorksPage = Astro.url.pathname === baseUrlNoTrailingSlash || Astro.url.p
 const audioRes = await fetch("https://api.janislabhart.ch/wp-json/wp/v2/media?&per_page=100&media_type=audio");
 const audioFiles = await audioRes.json();
 
-const initialDrone = audioFiles.find((media: any) => media.slug === 'langerdronefuranfang').source_url || null;
+
+const initialDrone = audioFiles.find((media: any) => media.title.rendered === 'langerdronefuranfang').source_url || null;
 
 
 
