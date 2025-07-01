@@ -26,8 +26,29 @@ const processedEvents = events
 // Sort events by date (newest first)
 processedEvents.sort((a, b) => b.date.getTime() - a.date.getTime());
 
-// Group events by month/year
-const eventsByMonth = processedEvents.reduce((acc, event) => {
+
+// Separate upcoming and past events
+const now = new Date();
+const upcomingEvents = processedEvents.filter(event => event.date >= now);
+const pastEvents = processedEvents.filter(event => event.date < now);
+
+
+// Group upcoming events by month
+const upcomingByMonth = upcomingEvents.reduce((acc, event) => {
+  const monthKey = `${event.date.getFullYear()}-${event.date.getMonth()}`;
+  if (!acc[monthKey]) {
+    acc[monthKey] = {
+      year: 'UPCOMING',
+      month: event.date.toLocaleDateString('en-US', { month: 'long' }).toUpperCase(),
+      events: []
+    };
+  }
+  acc[monthKey].events.push(event);
+  return acc;
+}, {});
+
+// Group past events by month/year
+const pastByMonth = pastEvents.reduce((acc, event) => {
   const monthKey = `${event.date.getFullYear()}-${event.date.getMonth()}`;
   if (!acc[monthKey]) {
     acc[monthKey] = {
@@ -40,8 +61,19 @@ const eventsByMonth = processedEvents.reduce((acc, event) => {
   return acc;
 }, {});
 
-// Convert to array and sort by date
-const monthGroupsArray = Object.values(eventsByMonth).sort((a: any, b: any) => b.year - a.year);
+// Convert to arrays and combine (upcoming first, then past)
+const upcomingArray = Object.values(upcomingByMonth).sort((a: any, b: any) => {
+  // For upcoming events, sort by month (chronological order)
+  const aDate = new Date(a.events[0].date);
+  const bDate = new Date(b.events[0].date);
+  return aDate.getTime() - bDate.getTime();
+});
+
+const pastArray = Object.values(pastByMonth).sort((a: any, b: any) => b.year - a.year);
+
+// Combine arrays
+const monthGroupsArray = [...upcomingArray, ...pastArray];
+
 ---
 
 <Layout>
