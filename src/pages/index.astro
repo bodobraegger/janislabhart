@@ -11,16 +11,16 @@ const posts = posts_raw
     const figureRegex = /<figure[^>]*>.*?<\/figure>/gs;
     const figures = post.content.rendered.match(figureRegex) || [];
 
-    // Filter figures to only include those with img tags (exclude audio, iframe, etc.)
-    const imageFigures = figures.filter(figureHtml => {
-      return figureHtml.includes('<img');
+    // Filter figures to only include those with imagery (exclude audio)
+    const filteredFigures = figures.filter(figureHtml => {
+      return !figureHtml.includes('<audio');
     });
-    const iframeFigures = figures.filter(figureHtml => {
-      return figureHtml.includes('<iframe');
-    });
+
+    let editedFigures: string[] = [];
+
     let cleanContent = post.content.rendered;
     
-    iframeFigures.forEach(iframeHtml => {
+    filteredFigures.forEach(iframeHtml => {
       // Remove iframe figures from content
       cleanContent = cleanContent.replace(iframeHtml, '');
       // remove width and height attributes from iframes
@@ -30,12 +30,12 @@ const posts = posts_raw
       // remove </div>
       iframeHtml = iframeHtml.replace(/<\/div>/, '');
       // Add iframe to figures
-      imageFigures.push(iframeHtml);
+      editedFigures.push(iframeHtml);
     });
     
 
     // Remove only image figures from content (keep audio/iframe figures)
-    imageFigures.forEach(figureHtml => {
+    editedFigures.forEach(figureHtml => {
       cleanContent = cleanContent.replace(figureHtml, '');
     });
 
@@ -44,7 +44,7 @@ const posts = posts_raw
       content: {
         ...post.content,
         rendered: cleanContent,
-        figures: imageFigures
+        figures: editedFigures
       }
     };
   });
