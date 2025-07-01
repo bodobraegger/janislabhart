@@ -87,9 +87,9 @@ function hashString(str: string): number {
 
 // Generate consistent pseudorandom positions based on post ID
 const randomPositions = postsWithImagesSorted.map((post: any) => {
-  const seed = hashString(post.id.toString() + post.title.rendered);
-  const x = ((seed % 100) - 50); // Range: -100 to 100
-  const y = (((seed >> 8) % 100) - 100); // Range: -100 to 0
+  const seed = hashString(post.slug.toString() + post.title.rendered);
+  const x = ((seed % 200) - 10); // Range: -100 to 100
+  const y = (((seed >> 8) % 200) - 200); // Range: -100 to 0
   return { x, y };
 });
 ---
@@ -99,8 +99,8 @@ const randomPositions = postsWithImagesSorted.map((post: any) => {
       <div class="text-center w-full relative">
         <!-- Project list -->
           {postsWithImagesSorted.map((post: any, index: number) => (
-              <div class="project-item group" data-project-category={post.class_list.pop()} data-project-id={post.id}>
-                <h2 id={post.id} class="peer select-none transition-all text-3xl sm:text-4xl md:text-6xl lg:text-8xl"> {/* aria-expanded:color-[var(--c-highlight)] */}
+              <div class="project-item group" data-project-category={post.class_list.pop()} data-project-id={post.slug}>
+                <h2 id={post.slug} class="peer select-none transition-all text-3xl sm:text-4xl md:text-6xl lg:text-8xl"> {/* aria-expanded:color-[var(--c-highlight)] */}
                   {post.title.rendered}
                 </h2>
                 <!-- Project image preview - appears on hover at pseudorandom position -->
@@ -111,7 +111,7 @@ const randomPositions = postsWithImagesSorted.map((post: any) => {
                   <div class="w-48 h-64">
                     {post.featuredImage && (
                       <img 
-                        src={post.featuredImage} 
+                        src={post.featuredImage}
                         alt={post.title.rendered}
                         class="w-full h-full object-cover filter-[var(--image-filters)]"
                       />
