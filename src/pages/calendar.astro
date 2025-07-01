@@ -94,14 +94,14 @@ const monthGroupsArray = Object.values(eventsByMonth).sort((a: any, b: any) => b
                   </div>
 
                   <!-- Description -->
-                  <div class="col-span-12">
+                  <div class="col-span-21 md:col-span-12">
                     <div>{event.title}</div>
                     {event.content && (
                       <div class="font-normal" set:html={event.content} />
                     )}
                   </div>
 
-                  <!-- Location (desktop only) -->
+                  <!-- Location -->
                   <div class="max-md:row-start-2 max-md:col-start-3 col-span-4">
                     {event.location}
                   </div>
