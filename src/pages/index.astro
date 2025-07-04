@@ -173,83 +173,95 @@ const randomPositions = postsWithImagesSorted.map((post: any) => {
 </Layout>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    
-    const projectItems = document.querySelectorAll('.project-item');
-    
-    projectItems.forEach(item => {
-      const title = item.querySelector('h2');
-      if (window.location.hash.length) {
+function expandByHash(item: Element) {
+    const title = item.querySelector('h2');
+    if (window.location.hash.length) {
         const hash = window.location.hash.substring(1); // Remove the #
         if (hash == title?.id) {
-          const content = item.querySelector('.project-content');
-          if (content) {
-            content.classList.remove('max-h-0', 'opacity-0');
-            title.classList.add('invert')
-          }
+            const content = item.querySelector('.project-content');
+            if (content) {
+                content.classList.remove('max-h-0', 'opacity-0');
+                title.classList.add('invert')
+            }
         }
-      }
-      const content = item.querySelector('.project-content');
-      const closeBtn = item.querySelector('.close-btn');
-      
-      title?.addEventListener('click', () => {
+    }
+}
+window.addEventListener('hashchange', () => {
+    const projectItems = document.querySelectorAll('.project-item');
+    projectItems.forEach(item => {
+        expandByHash(item);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const projectItems = document.querySelectorAll('.project-item');
+
+    projectItems.forEach(item => {
+        expandByHash(item);
+        const title = item.querySelector('h2');
+        
+        const content = item.querySelector('.project-content');
+        const closeBtn = item.querySelector('.close-btn');
+        
+        title?.addEventListener('click', () => {
         /* 
         // Close all other open projects
         projectItems.forEach(otherItem => {
-          const otherTitle = otherItem.querySelector('h2');
-          if (otherItem !== item) {
+            const otherTitle = otherItem.querySelector('h2');
+            if (otherItem !== item) {
             const otherContent = otherItem.querySelector('.project-content');
             if (otherContent) {
-              otherTitle!.ariaExpanded = 'false';
-              otherContent.classList.add('max-h-0', 'opacity-0');
+                otherTitle!.ariaExpanded = 'false';
+                otherContent.classList.add('max-h-0', 'opacity-0');
             }
-          }
+            }
         });
         */
         
         // Toggle current project
         if (content) {
-          if (content.classList.contains('max-h-0')) {
+            if (content.classList.contains('max-h-0')) {
             title.ariaExpanded = 'true';
             content.classList.remove('max-h-0', 'opacity-0');
-          } else {
+            } else {
             title.ariaExpanded = 'false';
             content.classList.add('max-h-0', 'opacity-0');
-          }
+            }
         }
-      });
-      
-      closeBtn?.addEventListener('click', (e) => {
+        });
+        
+        closeBtn?.addEventListener('click', (e) => {
         e.stopPropagation();
         if (content) {
-          title!.ariaExpanded = 'false';
-          content.classList.add('max-h-0', 'opacity-0');
+            title!.ariaExpanded = 'false';
+            content.classList.add('max-h-0', 'opacity-0');
         }
-      });
+        });
     });
-  });
+});
 
-  // handle categoryworks events
-  window.addEventListener('categoryWorks', (event) => {
+// handle categoryworks events
+window.addEventListener('categoryWorks', (event) => {
     const category = `category-${(event as CustomEvent).detail.category}`;
 
     document.querySelectorAll('.project-item').forEach(item => {
-      // collapse all items
-      const content = item.querySelector('.project-content');
-      const title = item.querySelector('h2');
-      title!.ariaExpanded = 'false';
-      content!.classList.add('max-h-0', 'opacity-0');
-      if (category === 'category-all') {
+        // collapse all items
+        const content = item.querySelector('.project-content');
+        const title = item.querySelector('h2');
+        title!.ariaExpanded = 'false';
+        content!.classList.add('max-h-0', 'opacity-0');
+        if (category === 'category-all') {
         item.classList.remove('hidden');
         return;
-      }
-      const projectCat = item.getAttribute('data-project-category') || 'all';
-      if (projectCat === category) {
+        }
+        const projectCat = item.getAttribute('data-project-category') || 'all';
+        if (projectCat === category) {
         item.classList.remove('hidden');
-      } else {
+        } else {
         item.classList.add('hidden');
-      }
+        }
     });
 
-  });
+});
 </script>
