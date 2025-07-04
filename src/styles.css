@@ -138,12 +138,12 @@ footer {
     }
 }
 
-.prose img {
+.prose figure {
   filter: var(--image-filters);
   transition: filter 0.3s ease;
 }
 
-.prose img:hover {
+.prose figure:hover, .prose figure:focus {
     filter: grayscale(0);
 }
 
