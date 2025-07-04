@@ -105,7 +105,7 @@ const randomPositions = postsWithImagesSorted.map((post: any) => {
                 </h2>
                 <!-- Project image preview - appears on hover at pseudorandom position -->
                 <div 
-                  class="preview-image absolute opacity-0 not-group-has-aria-expanded:peer-hover:opacity-90 transition-opacity hidden lg:block z-50"
+                  class="preview-image absolute opacity-0 not-group-has-aria-expanded:peer-hover:opacity-90 transition-opacity hidden lg:block z-10"
                   style={`transform: translate(calc(${randomPositions[index].x}px), calc(${randomPositions[index].y}px - 50%));`}
                 >
                   <div class="w-48 h-64">
@@ -205,9 +205,7 @@ window.addEventListener('hashchange', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-
     const projectItems = document.querySelectorAll('.project-item');
-
     projectItems.forEach(item => {
         expandByHash(item);
         const title = item.querySelector('h2');

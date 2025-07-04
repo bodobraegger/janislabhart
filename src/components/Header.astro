@@ -91,7 +91,7 @@ const cursors = await fetch("https://api.janislabhart.ch/wp-json/wp/v2/media?&pe
         
         {isWorksPage && (
             <div class="works-dropdown transition-all duration-200 z-30 hidden">
-                <button class="category-btn" data-category="all">ALL</button>
+                <button class="category-btn selected" data-category="all">ALL</button>
                 {categories.map((category: any) => (
                     <button class="category-btn" data-category={category.slug}>
                         {category.name.toUpperCase()}
