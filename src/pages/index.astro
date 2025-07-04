@@ -234,6 +234,12 @@ document.addEventListener('DOMContentLoaded', () => {
             close
         });
     });
+    const figures = document.querySelectorAll('.prose figure');
+    figures.forEach(figure => {
+        figure.addEventListener('click', (e) => {
+            figure.classList.add('clicked');
+        });
+    });
 });
 
 // handle categoryworks events
