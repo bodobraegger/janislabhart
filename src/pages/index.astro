@@ -5,49 +5,49 @@ const res = await fetch("https://api.janislabhart.ch/wp-json/wp/v2/posts/?per_pa
 const posts_raw = await res.json();
 
 const posts = posts_raw
-  .filter((post: any) => post.class_list && post.class_list[post.class_list.length - 1] !== 'category-event')
-  .map((post: any) => {
-    // Extract figures using regex
-    const figureRegex = /<figure[^>]*>.*?<\/figure>/gs;
-    const figures = post.content.rendered.match(figureRegex) || [];
+    .filter((post: any) => post.class_list && post.class_list[post.class_list.length - 1] !== 'category-event')
+    .map((post: any) => {
+        // Extract figures using regex
+        const figureRegex = /<figure[^>]*>.*?<\/figure>/gs;
+        const figures = post.content.rendered.match(figureRegex) || [];
 
-    // Filter figures to only include those with imagery (exclude audio)
-    const filteredFigures = figures.filter(figureHtml => {
-      return !figureHtml.includes('<audio');
+        // Filter figures to only include those with imagery (exclude audio)
+        const filteredFigures = figures.filter(figureHtml => {
+            return !figureHtml.includes('<audio');
+        });
+
+        let editedFigures: string[] = [];
+
+        let cleanContent = post.content.rendered;
+        
+        filteredFigures.forEach(iframeHtml => {
+        // Remove iframe figures from content
+        cleanContent = cleanContent.replace(iframeHtml, '');
+        // remove width and height attributes from iframes
+        iframeHtml = iframeHtml.replace(/width="\d+"\s*height="\d+"/, '');
+        // remove <div class="wp-block-embed__wrapper">
+        iframeHtml = iframeHtml.replace(/<div class="wp-block-embed__wrapper">/, '');
+        // remove </div>
+        iframeHtml = iframeHtml.replace(/<\/div>/, '');
+        // Add iframe to figures
+        editedFigures.push(iframeHtml);
+        });
+        
+
+        // Remove only image figures from content (keep audio/iframe figures)
+        editedFigures.forEach(figureHtml => {
+            cleanContent = cleanContent.replace(figureHtml, '');
+        });
+
+        return {
+            ...post,
+            content: {
+                ...post.content,
+                rendered: cleanContent,
+                figures: editedFigures
+            }
+        };
     });
-
-    let editedFigures: string[] = [];
-
-    let cleanContent = post.content.rendered;
-    
-    filteredFigures.forEach(iframeHtml => {
-      // Remove iframe figures from content
-      cleanContent = cleanContent.replace(iframeHtml, '');
-      // remove width and height attributes from iframes
-      iframeHtml = iframeHtml.replace(/width="\d+"\s*height="\d+"/, '');
-      // remove <div class="wp-block-embed__wrapper">
-      iframeHtml = iframeHtml.replace(/<div class="wp-block-embed__wrapper">/, '');
-      // remove </div>
-      iframeHtml = iframeHtml.replace(/<\/div>/, '');
-      // Add iframe to figures
-      editedFigures.push(iframeHtml);
-    });
-    
-
-    // Remove only image figures from content (keep audio/iframe figures)
-    editedFigures.forEach(figureHtml => {
-      cleanContent = cleanContent.replace(figureHtml, '');
-    });
-
-    return {
-      ...post,
-      content: {
-        ...post.content,
-        rendered: cleanContent,
-        figures: editedFigures
-      }
-    };
-  });
 
 // Fetch featured images for each post
 const postsWithImages = await Promise.all(
@@ -173,16 +173,27 @@ const randomPositions = postsWithImagesSorted.map((post: any) => {
 </Layout>
 
 <script>
+function toggleProjectExpand(content: Element, title: Element) {
+    if (content.classList.contains('max-h-0')) {
+        title.ariaExpanded = 'true';
+        content.classList.remove('max-h-0', 'opacity-0');
+    } else {
+        closeProject(content, title);
+    }
+}
+
+function closeProject(content: Element, title: Element) {
+    title.ariaExpanded = 'false';
+    content.classList.add('max-h-0', 'opacity-0');
+}
+
 function expandByHash(item: Element) {
     const title = item.querySelector('h2');
     if (window.location.hash.length) {
         const hash = window.location.hash.substring(1); // Remove the #
         if (hash == title?.id) {
             const content = item.querySelector('.project-content');
-            if (content) {
-                content.classList.remove('max-h-0', 'opacity-0');
-                title.classList.add('invert')
-            }
+            toggleProjectExpand(content!, title!);
         }
     }
 }
@@ -205,38 +216,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const closeBtn = item.querySelector('.close-btn');
         
         title?.addEventListener('click', () => {
-        /* 
-        // Close all other open projects
-        projectItems.forEach(otherItem => {
-            const otherTitle = otherItem.querySelector('h2');
-            if (otherItem !== item) {
-            const otherContent = otherItem.querySelector('.project-content');
-            if (otherContent) {
-                otherTitle!.ariaExpanded = 'false';
-                otherContent.classList.add('max-h-0', 'opacity-0');
-            }
-            }
-        });
-        */
+            /* 
+            // Close all other open projects
+            projectItems.forEach(otherItem => {
+                const otherTitle = otherItem.querySelector('h2');
+                if (otherItem !== item) {
+                    const otherContent = otherItem.querySelector('.project-content');
+                    closeProject(otherContent!, otherTitle!);
+                }
+            });
+            */
         
-        // Toggle current project
-        if (content) {
-            if (content.classList.contains('max-h-0')) {
-            title.ariaExpanded = 'true';
-            content.classList.remove('max-h-0', 'opacity-0');
-            } else {
-            title.ariaExpanded = 'false';
-            content.classList.add('max-h-0', 'opacity-0');
-            }
-        }
+            // Toggle current project
+            toggleProjectExpand(content!, title!);
         });
         
         closeBtn?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (content) {
-            title!.ariaExpanded = 'false';
-            content.classList.add('max-h-0', 'opacity-0');
-        }
+            e.stopPropagation();
+            close
         });
     });
 });
@@ -249,17 +246,16 @@ window.addEventListener('categoryWorks', (event) => {
         // collapse all items
         const content = item.querySelector('.project-content');
         const title = item.querySelector('h2');
-        title!.ariaExpanded = 'false';
-        content!.classList.add('max-h-0', 'opacity-0');
+        closeProject(content!, title!);
         if (category === 'category-all') {
-        item.classList.remove('hidden');
-        return;
+            item.classList.remove('hidden');
+            return;
         }
         const projectCat = item.getAttribute('data-project-category') || 'all';
         if (projectCat === category) {
-        item.classList.remove('hidden');
+            item.classList.remove('hidden');
         } else {
-        item.classList.add('hidden');
+            item.classList.add('hidden');
         }
     });
 
