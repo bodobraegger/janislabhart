@@ -57,6 +57,11 @@ header a {
 nav {
     user-select: none;
 }
+@media screen and (max-width: 768px) {
+    nav {
+        background: radial-gradient(circle at left, var(--c-bg) 20%, transparent 90%);
+    }
+}
 nav a {
     display: block;
 }
@@ -75,8 +80,10 @@ a, button {
 a:hover, button:hover, h2:hover, .clickSounds:hover {
     color: var(--c-highlight);
 }
+.works-dropdown {
+    padding: 0 0.5rem;
+}
 .category-btn {
-    margin-left: 0.5rem;
     display: block;
 }
 
