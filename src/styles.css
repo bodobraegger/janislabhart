@@ -189,7 +189,7 @@ body:has(.about) {
     width: 100%;
     height: auto;
     aspect-ratio: 16/9;
-    object-fit: cover;
+    object-fit: cover !important;
     object-position: center;
 }
 
