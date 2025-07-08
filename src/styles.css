@@ -134,7 +134,7 @@ input[type="radio"] {
 }
 
 footer {
-  mask-image: linear-gradient(to top, var(--c-bg) 0%, transparent 80%);
+  mask-image: linear-gradient(to top, var(--c-bg) 0%, transparent 100%);
 }
 
 .prose {
