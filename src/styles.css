@@ -13,7 +13,7 @@
     --container-8xl: 100rem;
 }
 
-.font-bold {
+.font-bold, strong, .about a {
     font-family: 'Bandit', sans-serif;
     letter-spacing: 0.5px;
 }
