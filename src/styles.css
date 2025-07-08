@@ -54,6 +54,10 @@ header a {
     display: inline-block;
 }
 
+a[href^="http"]::after, a[href^="mailto:"]::after {
+    content: '⭧';
+}
+
 nav {
     user-select: none;
 }
