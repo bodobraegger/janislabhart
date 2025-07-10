@@ -2,6 +2,17 @@
 import '../fonts.css'
 import '../styles.css'
 import Header from '../components/Header.astro'
+
+// capitalize the first letter of every word in a string
+function capitalize(s: string): string {
+    return s.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
+
+const title = capitalize(`Janis Labhart${Astro.props.title ? ` - ${Astro.props.title}` : ''}`);
+
 ---
 <!doctype html>
 <html lang="en">
@@ -11,15 +22,15 @@ import Header from '../components/Header.astro'
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
         <meta name="revisit-after" content="7 days">
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <meta property="og:title" content="Janis Labhart">
+        <meta property="og:title" content={title}>
         <meta property="og:image" content="https://api.janislabhart.ch/wp-content/uploads/2025/06/IMG_3135-1-scaled.jpg">
-        <meta property="og:image:alt" content="Janis Labhart">
-        <meta property="og:description" content="Janis Labhart's Portfolio">
-        <meta name="description" content="Janis Labhart's Portfolio">
+        <meta property="og:image:alt" content={title}>
+        <meta property="og:description" content=`${title}'s Portfolio`>
+        <meta name="description" content=`${title}'s Portfolio`>
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
-        <title>Janis Labhart</title>
+        <title>{title}</title>
     </head>
     <body class="font-bold">
         <Header />
