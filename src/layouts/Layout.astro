@@ -13,6 +13,7 @@ function capitalize(s: string): string {
 
 const title = capitalize(`Janis Labhart${Astro.props.title ? ` - ${Astro.props.title}` : ''}`);
 
+const baseUrlNoTrailingSlash = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <!doctype html>
 <html lang="en">
@@ -27,8 +28,11 @@ const title = capitalize(`Janis Labhart${Astro.props.title ? ` - ${Astro.props.t
         <meta property="og:image:alt" content={title}>
         <meta property="og:description" content=`${title}'s Portfolio`>
         <meta name="description" content=`${title}'s Portfolio`>
-        <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+        <link rel="icon" href=`${baseUrlNoTrailingSlash}/favicon.ico` sizes="32x32">
+        <link rel="icon" href=`${baseUrlNoTrailingSlash}/favicon-16x16.png` sizes="16x16" type="image/png">
+        <link rel="icon" href=`${baseUrlNoTrailingSlash}/favicon-32x32.png` sizes="32x32" type="image/png">
+
         <meta name="generator" content={Astro.generator} />
         <title>{title}</title>
     </head>
