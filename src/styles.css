@@ -14,10 +14,12 @@
 }
 
 .font-bold, strong, .about a {
+    text-transform: uppercase;
     font-family: 'Bandit', sans-serif;
     letter-spacing: 0.5px;
 }
 .font-normal {
+    text-transform: none;
     font-family: 'Selecta', sans-serif;
     letter-spacing: -0.25px;
 }
