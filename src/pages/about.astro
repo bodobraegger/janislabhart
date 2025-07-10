@@ -12,11 +12,13 @@ const aboutContent = aboutPage?.content?.rendered || '';
 const aboutTitle = aboutPage?.title?.rendered || 'About';
 
   let featuredImage = null;
+  let featuredImageAlt = aboutPage?.acf?.artist_photo_alt || aboutTitle;
   if (aboutPage.featured_media) {
     try {
       const mediaRes = await fetch(`https://api.janislabhart.ch/wp-json/wp/v2/media/${aboutPage.featured_media}`);
       const media = await mediaRes.json();
       featuredImage = media.source_url;
+      featuredImageAlt = media.alt_text || featuredImageAlt;
     } catch (error) {
       console.log('Error fetching media:', error);
     }
@@ -38,7 +40,7 @@ const aboutTitle = aboutPage?.title?.rendered || 'About';
             <figure class="sm:w-90 mx-auto relative">
               <img 
                 src={featuredImage} 
-                alt={aboutTitle}
+                alt={featuredImageAlt}
               />
               <div class="absolute inset-0 bg-[var(--c-img-filter)] mix-blend-hard-light opacity-100"></div>
             </figure>
