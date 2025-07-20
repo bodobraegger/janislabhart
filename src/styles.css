@@ -57,7 +57,7 @@ header a {
 }
 
 a[href^="http"]::after, a[href^="mailto:"]::after {
-    content: '⭧';
+    content: ' ↗';
 }
 
 nav {

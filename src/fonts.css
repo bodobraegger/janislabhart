@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Bandit';
-    src: url('./assets/fonts/Bandit-Condensed.otf') format('opentype');
+    src: url('./assets/fonts/Bandit-Condensed.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
